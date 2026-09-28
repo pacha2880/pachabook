@@ -18,6 +18,7 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{tikz}
 \usepackage{cite} 
 \usepackage[none]{hyphenat}
 \sloppy % hace que LaTeX ajuste espacios en vez de cortar palabras
@@ -46,37 +47,41 @@
 
 \begin{document}
 
-% ================== CARÁTULA (sin número) ==================
-\pagenumbering{gobble}    % oculta numeración en la portada
+% Página completa con una imagen (tapa/contratapa). Las imágenes traen
+% 3 mm de sangrado por lado (11.4 x 14.55 cm): lo que sobra queda fuera de la página.
+\newcommand{\paginaimagen}[1]{%
+  \clearpage
+  \thispagestyle{empty}%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node at (current page.center) {\includegraphics[width=11.4cm]{#1}};
+  \end{tikzpicture}%
+  \clearpage
+}
 
-\begin{titlepage}
+\newcommand{\paginablanco}{%
+  \clearpage
+  \thispagestyle{empty}%
+  \mbox{}%
+  \clearpage
+}
+
+% ================== TAPA (sin número) ==================
+\pagenumbering{gobble}    % oculta numeración antes del contenido
+
+\paginaimagen{tapa}
+\paginablanco
+
+% ================== EPÍGRAFE ==================
 \thispagestyle{empty}
-\begin{center}
-\vspace*{0.5cm}
-
-{\fontsize{22}{26}\selectfont \textbf{Programación Competitiva Universitaria}}\par
-\vspace{0.35cm}
-{\Large \textit{112 CONSEJOS PARA DOMINAR LA ICPC}}\par
-\vspace{0.25cm}
-\rule{0.75\linewidth}{0.6pt}\par
-\vspace{0.35cm}
-{\large Rodrigo Salguero}\par
-
-\vfill
-
+\vspace*{\fill}
 \begin{quote}
-``La programación es un estilo de vida.'' 
+\textit{``La programación es un estilo de vida.''}
 \end{quote}
 \hfill -- Willmar Pimentel
+\vspace*{\fill}
+\clearpage
 
-\vspace*{0.3cm}
-\end{center}
-\end{titlepage}
-
-\newpage
-\thispagestyle{empty}
-\mbox{}
-\newpage
+\paginablanco
 
 % ================== CONTENIDO (desde página 1) ==================
 \pagenumbering{arabic}
@@ -85,5 +90,12 @@
 \thispagestyle{scrheadings}  % asegura que la primera página del contenido muestre número
 
 \input{contenido}
+
+% ================== CONTRATAPA ==================
+% Con la tapa, el epígrafe y sus reversos (4 páginas) la paridad física coincide
+% con la numeración: la contratapa debe caer en página par.
+\clearpage
+\ifodd\value{page}\paginablanco\fi
+\paginaimagen{contratapa}
 
 \end{document}
