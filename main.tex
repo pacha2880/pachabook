@@ -1,0 +1,89 @@
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+
+% Compilar en Overleaf con XeLaTeX
+\documentclass[11pt]{scrartcl}
+
+% ---- Paquetes ----
+\usepackage[spanish]{babel}
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Heros} % Sans tipo poster
+\usepackage{microtype}
+\usepackage{geometry}
+\usepackage{ragged2e}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{cite} 
+\usepackage[none]{hyphenat}
+\sloppy % hace que LaTeX ajuste espacios en vez de cortar palabras
+
+% --- Cuarto de hoja OFICIO (aprox 11 x 17 cm) ---
+\geometry{
+  paperwidth=10.8cm,
+  paperheight=13.95cm,
+  top=1.5cm,
+  bottom=1.5cm,
+  left=1.5cm,
+  right=1.5cm
+}
+
+\setlength{\parindent}{0pt}
+
+% ===== Numeración de páginas con KOMA =====
+\usepackage[automark]{scrlayer-scrpage}
+\clearpairofpagestyles
+\cfoot{\pagemark}             % número centrado en el pie
+\setlength{\footskip}{0.8cm}  % espacio entre texto y número
+
+\AtBeginDocument{%
+  \fontsize{11.5}{13}\selectfont
+}
+
+\begin{document}
+
+% ================== CARÁTULA (sin número) ==================
+\pagenumbering{gobble}    % oculta numeración en la portada
+
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+\vspace*{0.5cm}
+
+{\fontsize{22}{26}\selectfont \textbf{Programación Competitiva Universitaria}}\par
+\vspace{0.35cm}
+{\Large \textit{112 CONSEJOS PARA DOMINAR LA ICPC}}\par
+\vspace{0.25cm}
+\rule{0.75\linewidth}{0.6pt}\par
+\vspace{0.35cm}
+{\large Rodrigo Salguero}\par
+
+\vfill
+
+\begin{quote}
+``La programación es un estilo de vida.'' 
+\end{quote}
+\hfill -- Willmar Pimentel
+
+\vspace*{0.3cm}
+\end{center}
+\end{titlepage}
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+
+% ================== CONTENIDO (desde página 1) ==================
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagestyle{scrheadings}      % activa estilo de numeración
+\thispagestyle{scrheadings}  % asegura que la primera página del contenido muestre número
+
+\input{contenido}
+
+\end{document}
