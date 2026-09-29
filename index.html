@@ -138,6 +138,17 @@
     /* Consejo al azar */
     .azar { background: var(--azul); color: #fff; }
     .azar h2::before { background: var(--amarillo); }
+    /* El botón va arriba de la tarjeta: no se mueve con el largo del consejo */
+    .cabecera-azar {
+      max-width: 760px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px 24px;
+      margin-bottom: 24px;
+    }
+    .cabecera-azar h2 { margin: 0; }
     .tarjeta {
       max-width: 760px;
       background: var(--azul-2);
@@ -184,6 +195,7 @@
       .botones { justify-content: center; }
       section { padding: 56px 0; }
       .tarjeta { padding: 24px; }
+      .cabecera-azar { flex-direction: column; align-items: flex-start; }
       .cita { font-size: 1.15rem; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -227,15 +239,15 @@
 
     <section id="consejo" class="azar">
       <div class="contenedor">
-        <h2>Consejo al azar</h2>
+        <div class="cabecera-azar">
+          <h2>Consejo al azar</h2>
+          <button class="boton boton-principal" id="azar" type="button">Consejo al azar</button>
+        </div>
         <article class="tarjeta vacia" id="tarjeta" aria-live="polite">
           <p class="numero" id="c-numero">?</p>
           <p class="seccion" id="c-seccion" hidden></p>
           <p class="texto" id="c-texto">Pulsa el botón para descubrir uno de los 112 consejos.</p>
         </article>
-        <div class="botones">
-          <button class="boton boton-principal" id="azar" type="button">Consejo al azar</button>
-        </div>
       </div>
     </section>
   </main>
