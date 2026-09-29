@@ -18,7 +18,7 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{float}
-\usepackage{tikz}
+\usepackage{eso-pic}
 \usepackage{cite} 
 \usepackage[none]{hyphenat}
 \sloppy % hace que LaTeX ajuste espacios en vez de cortar palabras
@@ -52,9 +52,9 @@
 \newcommand{\paginaimagen}[1]{%
   \clearpage
   \thispagestyle{empty}%
-  \begin{tikzpicture}[remember picture, overlay]
-    \node at (current page.center) {\includegraphics[width=11.4cm]{#1}};
-  \end{tikzpicture}%
+  \AddToShipoutPictureBG*{\AtPageCenter{%
+    \makebox(0,0){\includegraphics[width=11.4cm]{#1}}}}%
+  \mbox{}%
   \clearpage
 }
 
