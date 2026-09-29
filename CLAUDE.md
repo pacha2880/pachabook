@@ -6,6 +6,7 @@ Web publicada: https://pacha2880.github.io/pachabook/
 ## Archivos
 
 - `main.tex`: formato, tapa, epígrafe y contratapa; hace `\input{contenido}`.
+- `pachabook-sin-tapas.tex`: define `\sintapas` y carga `main.tex`; sale el libro sin tapa ni contratapa (para la imprenta), con las mismas páginas en blanco.
 - `contenido.tex`: todo el texto (presentación, prólogo, consejos, bonus, epílogo, bibliografía).
 - `tapa.png`, `contratapa.png`: incluyen 3 mm de sangrado. Aprobadas tal cual por el usuario; no retocarlas.
 - `index.html`: portada web, escrita a mano.
@@ -14,8 +15,8 @@ Web publicada: https://pacha2880.github.io/pachabook/
 
 ## Publicación
 
-- Cada push a `main` ejecuta `.github/workflows/publicar.yml`: compila `pachabook.pdf` (XeLaTeX), corre `generar_web.py` y publica en GitHub Pages.
-- `pachabook.pdf`, `libro.html` y `web/consejos.js` son generados y están en `.gitignore`: **no commitearlos**.
+- Cada push a `main` ejecuta `.github/workflows/publicar.yml`: compila `pachabook.pdf` y `pachabook-sin-tapas.pdf` (XeLaTeX), corre `generar_web.py` y publica en GitHub Pages.
+- `pachabook.pdf`, `pachabook-sin-tapas.pdf`, `libro.html` y `web/consejos.js` son generados y están en `.gitignore`: **no commitearlos**.
 - Local (Windows): `xelatex -jobname=pachabook main.tex` (dos veces) y `py -3 web/generar_web.py`. `gh` está instalado y autenticado.
 
 ## Decisiones que no hay que revertir
@@ -35,7 +36,7 @@ Web publicada: https://pacha2880.github.io/pachabook/
 
 ## Pendiente
 
-- El PDF tiene 70 páginas; si se imprime grapado al centro necesita un múltiplo de 4. Depende de la imprenta.
+- PDF completo: 70 páginas; sin tapas: 68 (múltiplo de 4). Si la tapa va en cartulina aparte, la imprenta podría pedir quitar las páginas en blanco del inicio y del final (quedarían 66).
 
 ## Forma de trabajo
 

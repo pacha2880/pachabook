@@ -57,13 +57,17 @@
 
 % Página completa con una imagen (tapa/contratapa). Las imágenes traen
 % 3 mm de sangrado por lado (11.4 x 14.55 cm): lo que sobra queda fuera de la página.
+% Si \sintapas está definido (ver pachabook-sin-tapas.tex), no genera nada:
+% sale el libro sin tapa ni contratapa, conservando las páginas en blanco.
 \newcommand{\paginaimagen}[1]{%
-  \clearpage
-  \thispagestyle{empty}%
-  \AddToShipoutPictureBG*{\AtPageCenter{%
-    \makebox(0,0){\includegraphics[width=11.4cm]{#1}}}}%
-  \mbox{}%
-  \clearpage
+  \ifdefined\sintapas\else
+    \clearpage
+    \thispagestyle{empty}%
+    \AddToShipoutPictureBG*{\AtPageCenter{%
+      \makebox(0,0){\includegraphics[width=11.4cm]{#1}}}}%
+    \mbox{}%
+    \clearpage
+  \fi
 }
 
 \newcommand{\paginablanco}{%

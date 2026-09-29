@@ -1,4 +1,4 @@
-# En cada push a main: compila el PDF, genera la web y la publica en GitHub Pages.
+# En cada push a main: compila los PDFs (completo y sin tapas), genera la web y la publica en GitHub Pages.
 # Requiere: Settings → Pages → Source: "GitHub Actions".
 name: Publicar
 
@@ -25,11 +25,14 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Compilar PDF
+      - name: Compilar PDFs (completo y sin tapas)
         uses: xu-cheng/latex-action@v4
         with:
-          root_file: main.tex
-          args: -xelatex -jobname=pachabook -file-line-error -halt-on-error -interaction=nonstopmode
+          root_file: |
+            main.tex
+            pachabook-sin-tapas.tex
+          args: -xelatex -file-line-error -halt-on-error -interaction=nonstopmode
+          post_compile: mv main.pdf pachabook.pdf
 
       - uses: actions/setup-python@v7
         with:
