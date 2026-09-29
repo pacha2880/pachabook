@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Leer en línea · Programación Competitiva Universitaria</title>
+  <title>pachabook</title>
   <meta name="description" content="Lee en línea Programación Competitiva Universitaria: 112 consejos para dominar la ICPC, de Rodrigo Salguero.">
   <meta property="og:title" content="Programación Competitiva Universitaria · Leer en línea">
   <meta property="og:description" content="112 consejos para dominar la ICPC, por Rodrigo Salguero.">
   <meta property="og:image" content="https://pacha2880.github.io/pachabook/web/tapa.jpg">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23042550'/><text x='16' y='22' font-family='monospace' font-size='15' font-weight='700' fill='%23fddd46' text-anchor='middle'>AC</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23042550'/><g font-family='Arial Narrow,Arial,sans-serif' font-size='15' font-weight='700' fill='%23fddd46' text-anchor='middle'><text x='16' y='14.5'>28</text><text x='16' y='28.5'>80</text></g></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
@@ -48,6 +48,11 @@
       height: var(--barra);
       background: var(--azul);
       color: #fff;
+    }
+    .barra-dentro {                   /* mismo ancho que el contenido */
+      max-width: 1180px;
+      height: 100%;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       gap: 16px;
@@ -105,6 +110,8 @@
       align-self: start;
       max-height: calc(100vh - var(--barra));
       overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--linea) transparent;
       padding: 32px 0;
       font: 500 1.08rem/1.3 var(--titulos);
     }
@@ -214,7 +221,7 @@
     @media (max-width: 900px) {
       .marco { grid-template-columns: 1fr; padding: 0; gap: 0; }
       .boton-indice { display: inline-flex; }
-      .barra { gap: 12px; padding: 0 12px; }
+      .barra-dentro { gap: 12px; padding: 0 12px; }
       .barra .marca { font-size: 1.05rem; line-height: 1.1; white-space: normal; }
       .barra .marca span { display: block; }
       nav.indice {
@@ -241,9 +248,11 @@
 <body>
 
   <header class="barra">
-    <button class="boton boton-indice" id="boton-indice" type="button" aria-expanded="false" aria-controls="indice">Índice</button>
-    <a class="marca" href="./">Programación Competitiva <span>Universitaria</span></a>
-    <a class="boton boton-descarga" href="pachabook.pdf" target="_blank" rel="noopener" title="Ver el libro en PDF">PDF</a>
+    <div class="barra-dentro">
+      <button class="boton boton-indice" id="boton-indice" type="button" aria-expanded="false" aria-controls="indice">Índice</button>
+      <a class="marca" href="./">Programación Competitiva <span>Universitaria</span></a>
+      <a class="boton boton-descarga" href="pachabook.pdf" target="_blank" rel="noopener" title="Ver el libro en PDF">PDF</a>
+    </div>
     <div class="progreso" id="progreso"></div>
   </header>
 
