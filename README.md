@@ -48,4 +48,4 @@ py -3 web/generar_web.py
 También funciona en Overleaf, eligiendo XeLaTeX como compilador.
 Los archivos generados (`pachabook.pdf`, `libro.html`, `web/consejos.js`) no se suben al repositorio.
 
-Tamaño de página: cuarto de hoja oficio (10.8 × 13.95 cm).
+Tamaño de página: cuarto de hoja carta (10.8 × 13.95 cm).
