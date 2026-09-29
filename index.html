@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Programación Competitiva Universitaria · 112 consejos para dominar la ICPC</title>
+  <meta name="description" content="Libro de Rodrigo Salguero: 112 consejos prácticos para entrenar y competir en la ICPC. Descarga en PDF.">
+  <meta property="og:title" content="Programación Competitiva Universitaria">
+  <meta property="og:description" content="112 consejos para dominar la ICPC, por Rodrigo Salguero.">
+  <meta property="og:image" content="https://pacha2880.github.io/pachabook/web/tapa.jpg">
+  <meta property="og:type" content="book">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23042550'/><text x='16' y='22' font-family='monospace' font-size='15' font-weight='700' fill='%23fddd46' text-anchor='middle'>AC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --azul: #042550;
+      --azul-2: #0b3268;
+      --amarillo: #fddd46;
+      --crema: #f7f4ec;
+      --tinta: #16203a;
+      --tinta-suave: #4a5470;
+      --linea: #e2dccb;
+      --titulos: "Barlow Condensed", "Arial Narrow", sans-serif;
+      --texto: "Source Serif 4", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--crema);
+      color: var(--tinta);
+      font-family: var(--texto);
+      font-size: 1.125rem;
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .contenedor { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+    /* ---------- Portada ---------- */
+    .portada {
+      position: relative;
+      overflow: hidden;
+      background: var(--azul);
+      color: #fff;
+      padding: 72px 0 88px;
+    }
+    .portada .contenedor {
+      display: grid;
+      grid-template-columns: minmax(0, 320px) 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    .tapa {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, .45), 0 0 0 1px rgba(255, 255, 255, .06);
+      transform: rotate(-2deg);
+    }
+    .antetitulo {
+      font: 600 .95rem/1 var(--titulos);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--amarillo);
+      margin: 0 0 16px;
+    }
+    h1 {
+      font: 700 clamp(2.4rem, 6vw, 4rem)/1.02 var(--titulos);
+      margin: 0 0 20px;
+    }
+    .franja {
+      display: inline-block;
+      background: var(--amarillo);
+      color: var(--tinta);
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      letter-spacing: .04em;
+      padding: 8px 16px;
+      margin: 0 0 20px;
+      text-wrap: balance;
+    }
+    .autor { font-size: 1.25rem; margin: 0 0 32px; opacity: .92; }
+    .botones { display: flex; flex-wrap: wrap; gap: 12px; }
+    .boton {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font: 600 1.15rem/1 var(--titulos);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 15px 24px;
+      border-radius: 4px;
+      border: 2px solid var(--amarillo);
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+    .boton:hover { transform: translateY(-2px); }
+    .boton:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+    .boton-principal { background: var(--amarillo); color: var(--tinta); }
+    .boton-secundario { background: transparent; color: #fff; border-color: rgba(255, 255, 255, .45); }
+    .boton-secundario:hover { background: rgba(255, 255, 255, .08); }
+    .boton svg { width: 20px; height: 20px; flex: none; }
+
+    /* ---------- Secciones ---------- */
+    section { padding: 80px 0; }
+    section + section { border-top: 1px solid var(--linea); }
+    h2 {
+      font: 700 clamp(1.9rem, 4vw, 2.5rem)/1.1 var(--titulos);
+      margin: 0 0 32px;
+    }
+    h2::before {
+      content: "";
+      display: block;
+      width: 48px;
+      height: 5px;
+      background: var(--amarillo);
+      margin-bottom: 16px;
+    }
+
+    /* Sobre el libro */
+    .cita {
+      max-width: 720px;
+      margin: 0;
+      font-size: 1.3rem;
+      line-height: 1.6;
+    }
+    .cita p { margin: 0 0 20px; }
+    .cita footer {
+      font: 600 1.1rem/1.4 var(--titulos);
+      letter-spacing: .04em;
+      color: var(--tinta-suave);
+    }
+
+    /* Contenido */
+    .indice {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 12px;
+    }
+    .indice li {
+      background: #fff;
+      border: 1px solid var(--linea);
+      border-radius: 6px;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+    }
+    .indice .nombre { font-weight: 600; line-height: 1.3; }
+    .indice .rango {
+      font: 600 1rem/1 var(--titulos);
+      letter-spacing: .04em;
+      color: var(--tinta-suave);
+      white-space: nowrap;
+    }
+    .indice .extra { background: transparent; border-style: dashed; }
+    .indice small { display: block; font-weight: 400; font-size: .9rem; color: var(--tinta-suave); margin-top: 4px; }
+
+    /* Consejo al azar */
+    .azar { background: var(--azul); color: #fff; }
+    .azar h2::before { background: var(--amarillo); }
+    .tarjeta {
+      max-width: 760px;
+      background: var(--azul-2);
+      border-left: 6px solid var(--amarillo);
+      border-radius: 6px;
+      padding: 32px 36px;
+      margin-bottom: 24px;
+      min-height: 220px;
+    }
+    .tarjeta .numero {
+      font: 700 3.2rem/1 var(--titulos);
+      color: var(--amarillo);
+      margin: 0 0 4px;
+    }
+    .tarjeta .seccion {
+      font: 600 .95rem/1.3 var(--titulos);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .7;
+      margin: 0 0 20px;
+    }
+    .tarjeta .texto { font-size: 1.3rem; line-height: 1.55; margin: 0; }
+    .aviso { font: 500 1rem/1 var(--titulos); letter-spacing: .06em; color: var(--amarillo); margin-left: 8px; opacity: 0; transition: opacity .2s; }
+    .aviso.visible { opacity: 1; }
+
+    /* Pie */
+    footer.pie {
+      background: #031b3b;
+      color: rgba(255, 255, 255, .75);
+      padding: 40px 0;
+      font-size: 1rem;
+    }
+    footer.pie .contenedor { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+    footer.pie p { margin: 0; }
+
+    /* ---------- Celular ---------- */
+    @media (max-width: 760px) {
+      .portada { padding: 48px 0 64px; text-align: center; }
+      .portada .contenedor { grid-template-columns: 1fr; gap: 40px; }
+      .tapa { max-width: 240px; margin: 0 auto; }
+      .botones { justify-content: center; }
+      section { padding: 56px 0; }
+      .tarjeta { padding: 24px; }
+      .cita { font-size: 1.15rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .boton { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="portada">
+    <div class="contenedor">
+      <img class="tapa" src="web/tapa.jpg" width="640" height="825"
+           alt="Tapa del libro: Programación Competitiva Universitaria, 112 consejos para dominar la ICPC, de Rodrigo Salguero">
+      <div>
+        <p class="antetitulo">Equipo ICPC · UMSS</p>
+        <h1>Programación Competitiva Universitaria</h1>
+        <p class="franja">112 CONSEJOS PARA DOMINAR LA ICPC</p>
+        <p class="autor">Rodrigo Salguero</p>
+        <div class="botones">
+          <a class="boton boton-principal" href="pachabook.pdf" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
+            Descargar PDF
+          </a>
+          <a class="boton boton-secundario" href="#consejo">Consejo al azar</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="sobre">
+      <div class="contenedor">
+        <h2>Sobre el libro</h2>
+        <blockquote class="cita">
+          <p>Rodrigo Salguero en este libro comparte su experiencia y la de otros competidores de Bolivia que han representado a sus Universidades y a nuestro país en justas competitivas en distintos niveles. Su trabajo de investigación ha culminado en este compendio de 112 consejos, que esperamos sea de provecho para los actuales y futuros competidores de nuestro país.</p>
+          <footer>Leticia Blanco, Vladimir Costas · Equipo ICPC – UMSS</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <section id="contenido">
+      <div class="contenedor">
+        <h2>Contenido</h2>
+        <ul class="indice">
+          <li class="extra"><span class="nombre">Presentación y Prólogo</span></li>
+          <li><span class="nombre">Inicio</span><span class="rango">1–6</span></li>
+          <li><span class="nombre">Entrenamiento individual</span><span class="rango">7–18</span></li>
+          <li><span class="nombre">Entrenamiento en equipo</span><span class="rango">19–30</span></li>
+          <li><span class="nombre">Antes de la competencia</span><span class="rango">31–38</span></li>
+          <li><span class="nombre">Durante la competencia: simulación</span><span class="rango">39–46</span></li>
+          <li>
+            <span class="nombre">Durante la competencia: competencia real
+              <small>Apertura, juego medio y final · actitud · lectura y resolución de problemas · escritura de código · control de daños</small>
+            </span>
+            <span class="rango">47–108</span>
+          </li>
+          <li><span class="nombre">Después de la competencia</span><span class="rango">109–112</span></li>
+          <li class="extra"><span class="nombre">Bonus y Epílogo</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="consejo" class="azar">
+      <div class="contenedor">
+        <h2>Consejo al azar</h2>
+        <article class="tarjeta" aria-live="polite">
+          <p class="numero" id="c-numero">#1</p>
+          <p class="seccion" id="c-seccion">Inicio</p>
+          <p class="texto" id="c-texto">Resolver gran cantidad de problemas fáciles e incrementar gradualmente la dificultad.</p>
+        </article>
+        <div class="botones">
+          <button class="boton boton-principal" id="otro" type="button">Otro consejo</button>
+          <button class="boton boton-secundario" id="copiar" type="button">Copiar enlace</button>
+          <span class="aviso" id="aviso" role="status">¡Enlace copiado!</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>© Rodrigo Salguero · Equipo ICPC – Universidad Mayor de San Simón</p>
+      <p><a href="https://github.com/pacha2880/pachabook">Código fuente en GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="web/consejos.js"></script>
+  <script>
+    (function () {
+      if (typeof CONSEJOS === "undefined" || !CONSEJOS.length) return;
+      var numero = document.getElementById("c-numero");
+      var seccion = document.getElementById("c-seccion");
+      var texto = document.getElementById("c-texto");
+      var aviso = document.getElementById("aviso");
+      var actual = 0;
+
+      function mostrar(i) {
+        actual = i;
+        var c = CONSEJOS[i];
+        numero.textContent = "#" + (i + 1);
+        seccion.textContent = c.seccion;
+        texto.textContent = c.texto;
+      }
+
+      function azar() {
+        var i;
+        do { i = Math.floor(Math.random() * CONSEJOS.length); } while (i === actual && CONSEJOS.length > 1);
+        mostrar(i);
+        history.replaceState(null, "", "#consejo-" + (i + 1));
+      }
+
+      // Un enlace como .../#consejo-42 abre directamente ese consejo
+      function desdeHash() {
+        var m = location.hash.match(/^#consejo-(\d+)$/);
+        if (!m) return false;
+        var n = parseInt(m[1], 10);
+        if (n < 1 || n > CONSEJOS.length) return false;
+        mostrar(n - 1);
+        document.getElementById("consejo").scrollIntoView();
+        return true;
+      }
+
+      if (!desdeHash()) mostrar(Math.floor(Math.random() * CONSEJOS.length));
+      window.addEventListener("hashchange", desdeHash);
+
+      document.getElementById("otro").addEventListener("click", azar);
+      document.getElementById("copiar").addEventListener("click", function () {
+        var url = location.href.split("#")[0] + "#consejo-" + (actual + 1);
+        var listo = function () {
+          aviso.classList.add("visible");
+          setTimeout(function () { aviso.classList.remove("visible"); }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(url).then(listo, function () {});
+      });
+    })();
+  </script>
+</body>
+</html>
