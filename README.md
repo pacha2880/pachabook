@@ -28,7 +28,7 @@ Guía de bolsillo con consejos prácticos para el entrenamiento y la competencia
 | `main.tex` | Documento principal: formato, tapa, epígrafe y contratapa |
 | `contenido.tex` | Texto del libro |
 | `pachabook-sin-tapas.tex` | Genera el PDF sin tapa ni contratapa (activa `\sintapas` y carga `main.tex`) |
-| `tapa.png`, `contratapa.png` | Tapa y contratapa (incluyen 3 mm de sangrado) |
+| `tapa.jpg`, `contratapa.jpg` | Tapa y contratapa (CMYK, 300 dpi, tamaño exacto de página) |
 | `aceptados.png`, `envios.png` | Imágenes usadas en el contenido |
 | `index.html`, `web/` | Página web (GitHub Pages); `libro.html` se genera desde `contenido.tex` |
 

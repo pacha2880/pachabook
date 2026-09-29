@@ -8,7 +8,7 @@ Web publicada: https://pacha2880.github.io/pachabook/
 - `main.tex`: formato, tapa, epígrafe y contratapa; hace `\input{contenido}`.
 - `pachabook-sin-tapas.tex`: define `\sintapas` y carga `main.tex`; sale el libro sin tapa ni contratapa (para la imprenta), con las mismas páginas en blanco.
 - `contenido.tex`: todo el texto (presentación, prólogo, consejos, bonus, epílogo, bibliografía).
-- `tapa.png`, `contratapa.png`: incluyen 3 mm de sangrado. Aprobadas tal cual por el usuario; no retocarlas.
+- `tapa.jpg`, `contratapa.jpg`: versión final del diseñador, CMYK, 300 dpi, tamaño exacto de página (**sin sangrado**). No retocarlas.
 - `index.html`: portada web, escrita a mano.
 - `web/generar_web.py` + `web/plantilla_libro.html`: generan `libro.html` y `web/consejos.js` desde `contenido.tex` (el epígrafe lo toman de `main.tex`).
 - `web/tapa.jpg`: copia web de la tapa (sin sangrado), hecha a mano.
@@ -31,12 +31,13 @@ Web publicada: https://pacha2880.github.io/pachabook/
 ## Lo que no se actualiza solo
 
 - Si cambia la cantidad de consejos, buscar "112" en todo el repo (`index.html`, `contenido.tex`) y avisar que la tapa también lo dice.
-- Si cambia `tapa.png`, regenerar `web/tapa.jpg`.
+- Si cambia `tapa.jpg`, regenerar `web/tapa.jpg` (convertir a RGB, 640 px de ancho).
+- El texto de "Sobre el libro" en `index.html` es el de la contratapa: si cambia uno, actualizar el otro.
 - `generar_web.py` solo convierte los comandos LaTeX que el libro usa hoy. Si se agrega uno nuevo (tablas, notas al pie, fórmulas), adaptar el conversor y revisar `libro.html`.
 
 ## Pendiente
 
-- PDF completo: 70 páginas; sin tapas: 68 (múltiplo de 4). Si la tapa va en cartulina aparte, la imprenta podría pedir quitar las páginas en blanco del inicio y del final (quedarían 66).
+- Falta el archivo de tapa para imprenta: una sola pieza contratapa + lomo + tapa, con 3 mm de sangrado. Lo ideal es que lo arme el diseñador.
 
 ## Forma de trabajo
 
