@@ -1,4 +1,4 @@
-// Generado por web/generar_consejos.py a partir de contenido.tex. No editar a mano.
+// Generado por web/generar_web.py a partir de contenido.tex. No editar a mano.
 const CONSEJOS = [
  {
   "seccion": "Inicio",

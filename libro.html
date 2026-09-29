@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leer en línea · Programación Competitiva Universitaria</title>
+  <meta name="description" content="Lee en línea Programación Competitiva Universitaria: 112 consejos para dominar la ICPC, de Rodrigo Salguero.">
+  <meta property="og:title" content="Programación Competitiva Universitaria · Leer en línea">
+  <meta property="og:description" content="112 consejos para dominar la ICPC, por Rodrigo Salguero.">
+  <meta property="og:image" content="https://pacha2880.github.io/pachabook/web/tapa.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23042550'/><text x='16' y='22' font-family='monospace' font-size='15' font-weight='700' fill='%23fddd46' text-anchor='middle'>AC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --azul: #042550;
+      --amarillo: #fddd46;
+      --amarillo-suave: #fff6c9;
+      --crema: #f7f4ec;
+      --papel: #fffdf8;
+      --tinta: #16203a;
+      --tinta-suave: #4f5873;
+      --linea: #e2dccb;
+      --enlace: #0b4aa2;
+      --titulos: "Barlow Condensed", "Arial Narrow", sans-serif;
+      --texto: "Source Serif 4", Georgia, serif;
+      --barra: 60px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--barra) + 16px); }
+    body {
+      margin: 0;
+      background: var(--crema);
+      color: var(--tinta);
+      font-family: var(--texto);
+      font-size: 1.125rem;
+      line-height: 1.7;
+    }
+    a { color: var(--enlace); }
+
+    /* ---------- Barra superior ---------- */
+    .barra {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: var(--barra);
+      background: var(--azul);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 20px;
+    }
+    .barra .marca {
+      color: #fff;
+      text-decoration: none;
+      font: 700 1.3rem/1.1 var(--titulos);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+    .barra .marca span { color: var(--amarillo); }
+    .boton {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: 600 1rem/1 var(--titulos);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 4px;
+      border: 2px solid var(--amarillo);
+      background: var(--amarillo);
+      color: var(--tinta);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .boton svg { width: 18px; height: 18px; }
+    .boton-indice { display: none; background: transparent; color: #fff; border-color: rgba(255,255,255,.45); }
+    .boton:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+    .progreso {
+      position: absolute;
+      left: 0; bottom: 0;
+      height: 3px;
+      width: 0;
+      background: var(--amarillo);
+    }
+
+    /* ---------- Estructura ---------- */
+    .marco {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      max-width: 1180px;
+      margin: 0 auto;
+      gap: 48px;
+      padding: 0 20px;
+    }
+    nav.indice {
+      position: sticky;
+      top: var(--barra);
+      align-self: start;
+      max-height: calc(100vh - var(--barra));
+      overflow-y: auto;
+      padding: 32px 0;
+      font: 500 1.08rem/1.3 var(--titulos);
+    }
+    nav.indice .rotulo {
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-size: .9rem;
+      color: var(--tinta-suave);
+      margin: 0 0 12px 12px;
+    }
+    nav.indice ol { list-style: none; margin: 0; padding: 0; }
+    nav.indice ol ol { margin: 2px 0 6px 12px; font-size: .98rem; }
+    nav.indice a {
+      display: block;
+      padding: 6px 12px;
+      border-left: 3px solid transparent;
+      color: var(--tinta);
+      text-decoration: none;
+      border-radius: 0 4px 4px 0;
+    }
+    nav.indice a:hover { background: rgba(4, 37, 80, .06); }
+    nav.indice a.activo { border-left-color: var(--amarillo); background: rgba(4, 37, 80, .07); font-weight: 700; }
+
+    main {
+      background: var(--papel);
+      border-left: 1px solid var(--linea);
+      border-right: 1px solid var(--linea);
+      padding: 24px 56px 80px;
+      min-width: 0;
+    }
+    main section { max-width: 68ch; }
+    main section + section { border-top: 1px solid var(--linea); margin-top: 56px; }
+
+    h2 {
+      font: 700 clamp(2rem, 4vw, 2.6rem)/1.1 var(--titulos);
+      margin: 56px 0 24px;
+    }
+    h2::before {
+      content: "";
+      display: block;
+      width: 48px;
+      height: 5px;
+      background: var(--amarillo);
+      margin-bottom: 16px;
+    }
+    h3 {
+      font: 700 1.6rem/1.2 var(--titulos);
+      margin: 48px 0 16px;
+      color: var(--azul);
+    }
+    p { margin: 0 0 1.1em; }
+    .firma {
+      text-align: right;
+      font: 600 1.1rem/1.45 var(--titulos);
+      letter-spacing: .03em;
+      color: var(--tinta-suave);
+      margin-top: 32px;
+    }
+
+    /* Consejos */
+    ol.consejos { list-style: none; margin: 0 0 32px; padding: 0; }
+    ol.consejos li {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 14px 16px;
+      margin: 0 -16px;
+      border-radius: 6px;
+      transition: background .3s;
+    }
+    ol.consejos li + li { border-top: 1px dashed var(--linea); }
+    ol.consejos .num {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      height: 36px;
+      min-width: 36px;
+      padding: 0 6px;
+      border-radius: 18px;
+      background: var(--azul);
+      color: var(--amarillo);
+      font: 700 1.1rem/1 var(--titulos);
+      text-decoration: none;
+      margin-top: 2px;
+    }
+    ol.consejos .num:hover { background: #0b3268; }
+    ol.consejos li:target { background: var(--amarillo-suave); }
+    .ref-consejo { font-weight: 600; }
+    .cita { text-decoration: none; font-size: .9em; }
+
+    ul.bonus { padding-left: 1.2em; }
+    ul.bonus li { margin-bottom: .6em; }
+    ul.bonus li::marker { color: #c9a400; }
+
+    figure { margin: 32px 0; }
+    figure img { width: 100%; height: auto; border: 1px solid var(--linea); border-radius: 4px; background: #fff; }
+    figcaption { font-size: .9rem; color: var(--tinta-suave); margin-top: 8px; word-break: break-word; }
+
+    ol.referencias { padding-left: 2.2em; font-size: 1rem; }
+    ol.referencias li { margin-bottom: .9em; word-break: break-word; }
+    ol.referencias li:target { background: var(--amarillo-suave); }
+
+    .fin {
+      margin-top: 64px;
+      padding: 24px;
+      background: var(--azul);
+      color: #fff;
+      border-radius: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 68ch;
+    }
+    .fin p { margin: 0; font: 600 1.25rem/1.3 var(--titulos); }
+    .fin a:not(.boton) { color: #fff; }
+
+    /* ---------- Celular y tablet ---------- */
+    @media (max-width: 900px) {
+      .marco { grid-template-columns: 1fr; padding: 0; gap: 0; }
+      .boton-indice { display: inline-flex; }
+      .boton-descarga span { display: none; }
+      nav.indice {
+        position: fixed;
+        top: var(--barra);
+        left: 0; right: 0;
+        max-height: calc(100vh - var(--barra));
+        background: var(--crema);
+        box-shadow: 0 12px 24px rgba(0,0,0,.18);
+        padding: 20px 12px;
+        z-index: 9;
+        display: none;
+      }
+      nav.indice.abierto { display: block; }
+      main { border: 0; padding: 8px 20px 64px; }
+      ol.consejos li { grid-template-columns: 40px 1fr; gap: 10px; margin: 0 -8px; padding: 12px 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      ol.consejos li { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="barra">
+    <button class="boton boton-indice" id="boton-indice" type="button" aria-expanded="false" aria-controls="indice">Índice</button>
+    <a class="marca" href="./">Programación Competitiva <span>Universitaria</span></a>
+    <a class="boton boton-descarga" href="pachabook.pdf" download>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
+      <span>PDF</span>
+    </a>
+    <div class="progreso" id="progreso"></div>
+  </header>
+
+  <div class="marco">
+    <nav class="indice" id="indice" aria-label="Índice del libro">
+      <p class="rotulo">Índice</p>
+<ol>
+<li><a href="#presentacion">Presentación</a>
+</li>
+<li><a href="#prologo">Prólogo</a>
+</li>
+<li><a href="#introduccion">Introducción</a>
+</li>
+<li><a href="#inicio">Inicio</a>
+</li>
+<li><a href="#entrenamiento-individual">Entrenamiento individual</a>
+</li>
+<li><a href="#entrenamiento-en-equipo">Entrenamiento en equipo</a>
+</li>
+<li><a href="#antes-de-la-competencia">Antes de la competencia</a>
+</li>
+<li><a href="#durante-la-competencia-simulacion">Durante la competencia (simulación)</a>
+</li>
+<li><a href="#durante-la-competencia-competencia-real">Durante la competencia (competencia real)</a>
+<ol>
+<li><a href="#apertura-y-juego-temprano">Apertura y juego temprano</a></li>
+<li><a href="#juego-medio">Juego medio</a></li>
+<li><a href="#juego-final">Juego final</a></li>
+<li><a href="#actitud-y-enfoque-competitivo">Actitud y enfoque competitivo</a></li>
+<li><a href="#lectura-de-problemas">Lectura de problemas</a></li>
+<li><a href="#resolucion-de-problemas">Resolución de problemas</a></li>
+<li><a href="#quien-es-el-programador">¿Quién es el programador?</a></li>
+<li><a href="#escritura-de-codigo">Escritura de código</a></li>
+<li><a href="#rutinas-de-apoyo">Rutinas de apoyo</a></li>
+<li><a href="#control-de-danos">Control de daños</a></li>
+</ol></li>
+<li><a href="#despues-de-la-competencia">Después de la competencia</a>
+</li>
+<li><a href="#bonus">Bonus</a>
+</li>
+<li><a href="#epilogo">Epílogo</a>
+</li>
+<li><a href="#referencias">Referencias</a>
+</li>
+</ol>
+    </nav>
+
+    <main>
+<section id="presentacion">
+<h2>Presentación</h2>
+<p>La programación competitiva es uno de los espacios formativos más desafiantes para el desarrollo del pensamiento algorítmico, la resolución creativa de problemas y el trabajo en equipo. En el ámbito universitario, competencias como la International Collegiate Programming Contest (ICPC) han contribuido a formar generaciones de estudiantes que no solo destacan por su dominio técnico, sino también por su disciplina, resiliencia y pasión por aprender.</p>
+<p>En este contexto, el presente libro —<em>Programación Competitiva Universitaria: 112 consejos para dominar la ICPC</em>— constituye una contribución al fortalecimiento de este proceso formativo extracurricular en nuestra Universidad, Latinoamérica y el mundo. Su autor, Rodrigo Salguero, es un competidor boliviano que ha representado a la Universidad Mayor de San Simón (UMSS) y a nuestro país en dos finales mundiales de la ICPC. Su experiencia, acumulada a lo largo de años de entrenamiento, creación de problemas para competencias, formación de futuros competidores y creación de espacios para una formación continua de un programador competitivo, se traduce aquí en una guía práctica, honesta y profundamente útil.</p>
+<p>Este libro no solo reúne técnicas y estrategias, sino también una filosofía de aprendizaje basada en la constancia, la autocrítica y el espíritu de colaboración. Estas características convierten a este libro en una herramienta de gran provecho para los actuales y futuros competidores, entrenadores y entusiastas de la programación competitiva en Bolivia y América Latina.</p>
+<p>Invitamos a los que gustan de la experiencia de programación con adrenalina competitiva a adentrarse en este compendio con curiosidad y mente abierta. Algunos consejos serán familiares; otros, nuevos y desafiantes. En todos ellos, sin embargo, encontrarán la voz de un competidor que comparte su experiencia con generosidad, con el deseo de inspirar a quienes buscan ir más allá de sus propios límites.</p>
+<p class="firma">Leticia Blanco<br>Vladimir Costas<br>Equipo ICPC<br>Universidad Mayor de San Simón</p>
+</section>
+<section id="prologo">
+<h2>Prólogo</h2>
+<p>Mientras uno entrena para competencias ICPC, es importante pensar de forma crítica en las acciones que se toman tanto fuera como dentro de las competencias. Si uno no tiene cuidado, es fácil caer en hábitos que estanquen el progreso del equipo. Considero que este libro provee una solución a este problema y contiene información que me hubiera gustado tener cuando recién estaba empezando en el mundo de las competencias de programación.</p>
+<p>Quiero dar énfasis a las secciones que hablan sobre las tres fases de una competencia y a los consejos para después de la competencia. Recomiendo a todos los equipos dar especial importancia a estas secciones y tener presentes los consejos en cada etapa de su entrenamiento.</p>
+<p>Por último, y complementando al consejo <a class="ref-consejo" href="#consejo-23">23</a>, nada de esto les servirá si no entrenan en equipo. Toda esta información puede parecer abrumadora, pero verán que, con el tiempo, se volverá algo natural e instintivo. Así que, ¡a entrenar!</p>
+<p class="firma">Miguel Ortiz<br>Cochabamba, Bolivia<br>2025</p>
+</section>
+<section id="introduccion">
+<h2 class="titulo-intro">112 CONSEJOS PARA DOMINAR LA ICPC</h2>
+<p>A continuación, se presentan 112 consejos destinados a la preparación, el entrenamiento y el desempeño en competencias de programación universitaria como la ICPC. Cada consejo se ha escrito como una recomendación clara, puntual, aplicable y respaldada por experiencia y análisis.</p>
+<p>Los consejos están numerados de forma continua, lo que facilita su consulta y seguimiento. Dentro de cada sección, se cuenta con prácticas agrupadas por intención u objetivo común. Cada sección cuenta con párrafos complementarios, cuyo objetivo es ayudar a entender mejor su utilidad, contexto o nivel de aplicabilidad.</p>
+<p>Esta guía se puede leer secuencialmente de principio a fin, o bien utilizarse como material de consulta según la necesidad del lector. Su diseño busca ser útil tanto para competidores individuales (iniciales o avanzados), como para equipos y entrenadores que buscan una herramienta concreta y adaptable para alcanzar un alto rendimiento competitivo.</p>
+</section>
+<section id="inicio">
+<h2>Inicio</h2>
+<p>Prácticas enfocadas en los primeros pasos para mejorar habilidades básicas y establecer fundamentos sólidos:</p>
+<ol class="consejos">
+<li id="consejo-1"><a class="num" href="#consejo-1" aria-label="Enlace al consejo 1">1</a><span>Resolver gran cantidad de problemas fáciles e incrementar gradualmente la dificultad.</span></li>
+<li id="consejo-2"><a class="num" href="#consejo-2" aria-label="Enlace al consejo 2">2</a><span>Si se conoce a alguien que tenga experiencia en programación competitiva, hacerle preguntas, pedir ayuda y si es posible clases de apoyo.</span></li>
+<li id="consejo-3"><a class="num" href="#consejo-3" aria-label="Enlace al consejo 3">3</a><span>Conseguir algún libro base y leerlo de principio a fin.</span></li>
+<li id="consejo-4"><a class="num" href="#consejo-4" aria-label="Enlace al consejo 4">4</a><span>Para formar un equipo tomar en cuenta personas que: tengan buena relación, tengan buena comunicación, les divierta resolver problemas, les guste programar, compartan objetivos, compartan el nivel de compromiso, cuenten con habilidades complementarias, tengan experiencia y nivel competitivo similar.</span></li>
+<li id="consejo-5"><a class="num" href="#consejo-5" aria-label="Enlace al consejo 5">5</a><span>Alcanzar un nivel adecuado de lectura de inglés para comprender correctamente enunciados y editoriales de problemas, mientras se amplía de manera constante el vocabulario.</span></li>
+<li id="consejo-6"><a class="num" href="#consejo-6" aria-label="Enlace al consejo 6">6</a><span>Practicar constantemente dactilografía para incrementar la velocidad de escritura de código, se considera aceptable poder escribir sin mirar el teclado con un mínimo de 50 palabras por minuto.</span></li>
+</ol>
+<p>Prácticamente, para tener un buen inicio no hace falta ser meticulosos, tener gente que te guie y te acompañe suele ser lo más valioso y lo que te mantiene enfocado.</p>
+<p>Claro está que hay que dedicarle el tiempo merecido resolviendo grandes cantidades de problemas y leer sobre los algoritmos básicos.</p>
+<p>El consejo <a class="ref-consejo" href="#consejo-3">3</a> es flexible en su aplicación porque existen múltiples formas de adquirir el conocimiento el propósito se centra en asegurarse de cubrir todos los temas básicos que se pueda.</p>
+<p>Los consejos <a class="ref-consejo" href="#consejo-5">5</a> y <a class="ref-consejo" href="#consejo-6">6</a> no son esenciales, pero pueden evitar el tener desventajas ante otros competidores.</p>
+</section>
+<section id="entrenamiento-individual">
+<h2>Entrenamiento individual</h2>
+<p>Prácticas diseñadas para desarrollar la capacidad individual mediante el entrenamiento constante, la mejora de habilidades técnicas y la consolidación del pensamiento algorítmico:</p>
+<ol class="consejos">
+<li id="consejo-7"><a class="num" href="#consejo-7" aria-label="Enlace al consejo 7">7</a><span>Mantener un ritmo constante de entrenamiento y evitar dejar de entrenar por largos periodos de tiempo.</span></li>
+<li id="consejo-8"><a class="num" href="#consejo-8" aria-label="Enlace al consejo 8">8</a><span>Fuera de competencia, antes de comenzar a escribir código, estimar cuánto tiempo tomará hacerlo, medir el tiempo real hasta obtener un envío aceptado, y luego comparar ambos para mejorar gradualmente la precisión en la estimación.</span></li>
+<li id="consejo-9"><a class="num" href="#consejo-9" aria-label="Enlace al consejo 9">9</a><span>Fuera de competencia, reescribir varias veces el código de una solución difícil, hasta sentirse cómodo escribiendo un código similar sin dificultad.</span></li>
+<li id="consejo-10"><a class="num" href="#consejo-10" aria-label="Enlace al consejo 10">10</a><span>Después de resolver un problema preguntarse qué se hizo bien, que se hizo mal, cómo se podría haber resuelto en menos tiempo y que se aprendió mientras se resolvió el problema.</span></li>
+<li id="consejo-11"><a class="num" href="#consejo-11" aria-label="Enlace al consejo 11">11</a><span>Después de resolver un problema comparar la solución con la de otros competidores.</span></li>
+<li id="consejo-12"><a class="num" href="#consejo-12" aria-label="Enlace al consejo 12">12</a><span>Si después de resolver un problema se ha desarrollado una técnica que se cree puede servir para otros problemas, documentar dicha técnica y compartirla.</span></li>
+<li id="consejo-13"><a class="num" href="#consejo-13" aria-label="Enlace al consejo 13">13</a><span>Consumir incrementalmente la editorial de un problema, leer la primera oración de la explicación y luego pensar 5 minutos, continuar avanzando oración por oración, párrafo por párrafo, intentando deducir la solución por cuenta propia a partir de algún punto.</span></li>
+<li id="consejo-14"><a class="num" href="#consejo-14" aria-label="Enlace al consejo 14">14</a><span>Si después de leer un par de veces la editorial de un problema aún no se consigue entender la solución, copiarla a mano en una hoja de papel y leer un par de veces más.</span></li>
+<li id="consejo-15"><a class="num" href="#consejo-15" aria-label="Enlace al consejo 15">15</a><span>Si después de leer un par de veces la editorial de un problema aún no se consigue entender la solución, leer códigos aceptados disponibles de varios competidores.</span></li>
+<li id="consejo-16"><a class="num" href="#consejo-16" aria-label="Enlace al consejo 16">16</a><span>Si después de intentar comprender la solución de un problema de múltiples maneras y tras varias horas de esfuerzo aún no se entiende, archivarlo e intentarlo en otra ocasión.</span></li>
+<li id="consejo-17"><a class="num" href="#consejo-17" aria-label="Enlace al consejo 17">17</a><span>Leer códigos de algoritmos de distintas fuentes referenciales.</span></li>
+<li id="consejo-18"><a class="num" href="#consejo-18" aria-label="Enlace al consejo 18">18</a><span>Para consolidar el dominio de una técnica o algoritmo, revisarlo en detalle, anotar los puntos importantes y enseñarlo a competidores de menor nivel o que no estén familiarizados con esa técnica o algoritmo.</span></li>
+</ol>
+<p>Ser constante es de las cosas más difíciles, pero también es de las que marcan más la diferencia. Tan simple y obvio como pueda sonar el consejo <a class="ref-consejo" href="#consejo-7">7</a>, es de los más importantes y quizás más difíciles de llevar a cabo.Como menciona Zhan Anri (soullless en Codeforces), autor del libro <em>You might break – and that's ok</em> <a class="cita" href="#ref-soullless2025">[10]</a> y medallista de oro en la European Junior Olympiad, retomar el hábito de resolver problemas después de una pausa prolongada es mucho más difícil que mantener una rutina mínima diaria.</p>
+<p>Los consejos <a class="ref-consejo" href="#consejo-8">8</a> y <a class="ref-consejo" href="#consejo-9">9</a> aplicados con disciplina ocasionan una mejora enorme en las habilidades de codificación.</p>
+<p>Los consejos del <a class="ref-consejo" href="#consejo-10">10</a> al <a class="ref-consejo" href="#consejo-12">12</a> están inspirados en las técnicas de resolución de problemas de George Pólya <a class="cita" href="#ref-polya1957">[8]</a>.</p>
+<p>Los consejos del <a class="ref-consejo" href="#consejo-13">13</a> al <a class="ref-consejo" href="#consejo-16">16</a> aprovechan el hecho de que actualmente la mayoría de los problemas cuentan con explicaciones de calidad, lo cual nos permite experimentar para nutrir y entrenar la mente para la resolución de problemas.Es aconsejable que cada competidor encuentre su propia forma de cuándo y cómo leer las editoriales.</p>
+</section>
+<section id="entrenamiento-en-equipo">
+<h2>Entrenamiento en equipo</h2>
+<p>Prácticas orientadas a desarrollar equipos sincronizados y resilientes, con la capacidad de tomar decisiones acertadas y resolver problemas en conjunto bajo presión en escenarios competitivos:</p>
+<ol class="consejos">
+<li id="consejo-19"><a class="num" href="#consejo-19" aria-label="Enlace al consejo 19">19</a><span>Desarrollar amistad entre los integrantes del equipo.</span></li>
+<li id="consejo-20"><a class="num" href="#consejo-20" aria-label="Enlace al consejo 20">20</a><span>Desarrollar comunicación efectiva entre los integrantes del equipo.</span></li>
+<li id="consejo-21"><a class="num" href="#consejo-21" aria-label="Enlace al consejo 21">21</a><span>Conocer las fortalezas y debilidades de cada miembro del equipo.</span></li>
+<li id="consejo-22"><a class="num" href="#consejo-22" aria-label="Enlace al consejo 22">22</a><span>Entre compañeros de equipo desarrollar estilos de programación similares.</span></li>
+<li id="consejo-23"><a class="num" href="#consejo-23" aria-label="Enlace al consejo 23">23</a><span>Participar en la mayor cantidad de competencias que se pueda.</span></li>
+<li id="consejo-24"><a class="num" href="#consejo-24" aria-label="Enlace al consejo 24">24</a><span>Participar en campamentos de programación.</span></li>
+<li id="consejo-25"><a class="num" href="#consejo-25" aria-label="Enlace al consejo 25">25</a><span>Realizar sesiones de entrenamiento entre varios equipos.</span></li>
+<li id="consejo-26"><a class="num" href="#consejo-26" aria-label="Enlace al consejo 26">26</a><span>Entrenar con competencias/problemas que cuenten con editorial y acceso a códigos aceptados para su posterior lectura.</span></li>
+<li id="consejo-27"><a class="num" href="#consejo-27" aria-label="Enlace al consejo 27">27</a><span>Para mejorar la dinámica de resolución de problemas en equipo, seleccionar problemas difíciles y resolverlos en grupos de 2 o 3 personas, practicando el pensamiento en voz alta, el intercambio de ideas, la creatividad, la discusión productiva, y la refutación de ideas erróneas.</span></li>
+<li id="consejo-28"><a class="num" href="#consejo-28" aria-label="Enlace al consejo 28">28</a><span>Dividir los temas básicos entre los miembros del equipo, comprometiéndose a aprenderlos individualmente para conseguir un mayor alcance colectivo.</span></li>
+<li id="consejo-29"><a class="num" href="#consejo-29" aria-label="Enlace al consejo 29">29</a><span>Asegurar que con el tiempo cada miembro del equipo domine todos los temas básicos y luego continúe especializándose en temas más avanzados.</span></li>
+<li id="consejo-30"><a class="num" href="#consejo-30" aria-label="Enlace al consejo 30">30</a><span>En el equipo contar con al menos 2 expertos en cada área, para evitar una sobrecarga de trabajo y tener el respaldo necesario en momentos críticos.</span></li>
+</ol>
+<p>Del 19 al 22 son recomendaciones que la mayoría de los autores aconsejan de forma explícita, lo cual sugiere que la conexión entre los miembros de equipo es crucial, que debe cultivarse, nutrirse y al que conviene dedicarle todo el tiempo posible. Un equipo que se conoce a sí mismo y que compensa desventajas individuales solo se forma participando en muchas competencias y simulaciones juntos. Finalmente, los consejos del <a class="ref-consejo" href="#consejo-28">28</a> al <a class="ref-consejo" href="#consejo-30">30</a> son consignas que describen el progreso natural de un equipo que decide cubrir el gran abanico de temas presentes en la ICPC.</p>
+</section>
+<section id="antes-de-la-competencia">
+<h2>Antes de la competencia</h2>
+<p>Prácticas centradas en la preparación previa al evento competitivo, que incluyen la organización del material de consulta y acuerdos hechos por el equipo:</p>
+<ol class="consejos">
+<li id="consejo-31"><a class="num" href="#consejo-31" aria-label="Enlace al consejo 31">31</a><span>Mantener un listado con conceptos, fórmulas, constantes y teoremas para consultas rápidas.</span></li>
+<li id="consejo-32"><a class="num" href="#consejo-32" aria-label="Enlace al consejo 32">32</a><span>Mantener un listado con hechos relevantes, recordatorios, errores comunes a evitar, buenas prácticas y estrategias.</span></li>
+<li id="consejo-33"><a class="num" href="#consejo-33" aria-label="Enlace al consejo 33">33</a><span>Mantener el team notebook con implementaciones cortas y rápidas de algoritmos clásicos o códigos difíciles de memorizar.</span></li>
+<li id="consejo-34"><a class="num" href="#consejo-34" aria-label="Enlace al consejo 34">34</a><span>En el team notebook, es aceptable incluir algoritmos a modo de caja negra, conociendo solo su propósito y su complejidad espacio-temporal.</span></li>
+<li id="consejo-35"><a class="num" href="#consejo-35" aria-label="Enlace al consejo 35">35</a><span>Priorizar la calidad antes que la cantidad al agregar contenido al team notebook.</span></li>
+<li id="consejo-36"><a class="num" href="#consejo-36" aria-label="Enlace al consejo 36">36</a><span>Llevar un diccionario de bolsillo Inglés-Español a las competencias.</span></li>
+<li id="consejo-37"><a class="num" href="#consejo-37" aria-label="Enlace al consejo 37">37</a><span>Establecer de antemano un orden fijo y la porción de problemas que cada integrante del equipo leerá, mantener ese plan en todas las ocasiones.</span></li>
+<li id="consejo-38"><a class="num" href="#consejo-38" aria-label="Enlace al consejo 38">38</a><span>Designar como líder de equipo a la persona con mayor experiencia y criterio, quien tomará las decisiones finales con el respaldo del equipo.</span></li>
+</ol>
+<p>Tener material de referencia completo y de calidad, elaborado por los integrantes del equipo cada vez que se aprende un nuevo tema o una lección ayuda a reducir la incertidumbre y fortalecer la confianza del equipo. No es suficiente contar con material de calidad, sino que es fundamental saber usarlo durante la competencia. Los consejos <a class="ref-consejo" href="#consejo-37">37</a> y <a class="ref-consejo" href="#consejo-38">38</a> hacen referencia a que el equipo debe tener bien establecidas sus rutinas durante la competencia y tener planes de contingencia en los momentos de tomar decisiones. Dado que estos pueden llegar a ser muy variados y dependen de cada equipo, no se los detalla exhaustivamente en esta guía.</p>
+</section>
+<section id="durante-la-competencia-simulacion">
+<h2>Durante la competencia (simulación)</h2>
+<p>Prácticas a tomar en cuenta durante simulaciones de competencia, para reforzar las dinámicas de equipo en un entorno controlado:</p>
+<ol class="consejos">
+<li id="consejo-39"><a class="num" href="#consejo-39" aria-label="Enlace al consejo 39">39</a><span>Simular competencias oficiales en equipo procurando replicar las condiciones de competencias oficiales.</span></li>
+<li id="consejo-40"><a class="num" href="#consejo-40" aria-label="Enlace al consejo 40">40</a><span>Tener entrenamientos largos (5 horas), para incrementar la resistencia.</span></li>
+<li id="consejo-41"><a class="num" href="#consejo-41" aria-label="Enlace al consejo 41">41</a><span>Evitar entrenamientos cortos (menores 5 horas), pero realizarlos si es que la alternativa sería no entrenar.</span></li>
+<li id="consejo-42"><a class="num" href="#consejo-42" aria-label="Enlace al consejo 42">42</a><span>Probar diferentes estrategias, afinarlas y ajustarlas según cómo responda el equipo.</span></li>
+<li id="consejo-43"><a class="num" href="#consejo-43" aria-label="Enlace al consejo 43">43</a><span>Hacer la prueba con programación en pares.</span></li>
+<li id="consejo-44"><a class="num" href="#consejo-44" aria-label="Enlace al consejo 44">44</a><span>Realizar prácticas de lectura de problemas en equipo al simular competencias: al inicio leer todos los problemas sin resolver ninguno, discutir las dificultades de cada uno, comparar las predicciones con el scoreboard y luego continuar con la simulación.</span></li>
+<li id="consejo-45"><a class="num" href="#consejo-45" aria-label="Enlace al consejo 45">45</a><span>En simulaciones, registrar el estado de la competencia cada 30 minutos (para competencias de 5 horas) para tener conciencia del comportamiento del equipo. Este registro debe incluir la cantidad de problemas leídos, resueltos e intentados, junto con un resumen de lo sucedido en los últimos 30 minutos.</span></li>
+<li id="consejo-46"><a class="num" href="#consejo-46" aria-label="Enlace al consejo 46">46</a><span>Durante simulaciones de competencias, copiar los algoritmos del team notebook a mano, tal como se hace en competencias oficiales.</span></li>
+</ol>
+<p>El objetivo principal de hacer simulaciones no tiene por qué ser siempre el de quedar lo más arriba posible en los standings.</p>
+<p>Las simulaciones son un espacio en el que el equipo puede experimentar y probar cualquier idea y estrategia que se les ocurra; son una oportunidad para que el equipo se conozca mejor a sí mismo y fortalezca sus debilidades.</p>
+<p>Al mismo tiempo, las simulaciones son una herramienta valiosa para replicar a voluntad las condiciones de competencias oficiales y ensayar el desempeño del equipo bajo su máxima exigencia, de modo que lleguen a las competencias reales con más experiencia y criterio.</p>
+</section>
+<section id="durante-la-competencia-competencia-real">
+<h2>Durante la competencia (competencia real)</h2>
+<p>Prácticas aplicables directamente durante el desarrollo de una competencia oficial, centradas en la toma de decisiones, asignación de tareas, gestión del tiempo y comunicación en tiempo real.</p>
+<p>Al tratarse de la sección más extensa, las recomendaciones se presentan en diez partes, organizadas según un orden lógico basado en las fases cronológicas de la competencia y en el proceso de resolución de problemas.</p>
+<h3 id="apertura-y-juego-temprano">Apertura y juego temprano</h3>
+<ol class="consejos">
+<li id="consejo-47"><a class="num" href="#consejo-47" aria-label="Enlace al consejo 47">47</a><span>Al inicio de la competencia identificar el problema fácil e iniciar su resolución lo más antes posible.</span></li>
+<li id="consejo-48"><a class="num" href="#consejo-48" aria-label="Enlace al consejo 48">48</a><span>Durante competencias y simulaciones mantener una hoja con una tabla donde cada problema tenga su sección, anotando el tema, la dificultad o un resumen breve; tachar los problemas resueltos.</span></li>
+<li id="consejo-49"><a class="num" href="#consejo-49" aria-label="Enlace al consejo 49">49</a><span>Durante la primera hora de competencia leer todos los problemas e identificar los fáciles, medios y difíciles.</span></li>
+<li id="consejo-50"><a class="num" href="#consejo-50" aria-label="Enlace al consejo 50">50</a><span>Al decidir qué problema resolver a continuación, consultar el scoreboard para guiarse por los problemas más resueltos, ya que suelen ser los más accesibles.</span></li>
+<li id="consejo-51"><a class="num" href="#consejo-51" aria-label="Enlace al consejo 51">51</a><span>Priorizar el trabajo individual mientras se resuelven problemas fáciles.</span></li>
+<li id="consejo-52"><a class="num" href="#consejo-52" aria-label="Enlace al consejo 52">52</a><span>Cada miembro del equipo debe estar consciente del estado de la competencia en todo momento.</span></li>
+<li id="consejo-53"><a class="num" href="#consejo-53" aria-label="Enlace al consejo 53">53</a><span>En las primeras horas de competencia procurar resolver los problemas fáciles y trabajar en los problemas medios.</span></li>
+</ol>
+<p>La fase inicial establece el clima de la competencia, es importante empezar con una mentalidad energética y optimista, pero no confiada. También, saber identificar los problemas fáciles desde el inicio es crucial. Aunque los standings puedan dar dicha información, utilizarlos como primera fuente de información implica estar por debajo de los primeros lugares.</p>
+<p>Suele ser efectivo analizar rápidamente los enunciados, clasificarlos por dificultad e identificar los problemas más fáciles antes que otros equipos, leyendo tantos enunciados como sea posible desde el principio. Una vez identificados los problemas, el equipo puede planificar con mayor comodidad su estrategia para el resto de la competencia.</p>
+<p>Cabe recalcar que, la división de las fases de la competencia como apertura, juego medio y final se inspira en la propuesta realizada por Bloomfield &amp; Sotomayor <a class="cita" href="#ref-bloomfield2016">[3]</a>, quienes en su artículo A Programming Contest Strategy Guide divide a la competencia en estas etapas con características, objetivos y dinámicas específicas.</p>
+<h3 id="juego-medio">Juego medio</h3>
+<ol class="consejos">
+<li id="consejo-54"><a class="num" href="#consejo-54" aria-label="Enlace al consejo 54">54</a><span>Una vez resueltos los problemas fáciles, asegurarse de tener claro de qué tratan los problemas disponibles antes de decidir qué problema resolver a continuación.</span></li>
+<li id="consejo-55"><a class="num" href="#consejo-55" aria-label="Enlace al consejo 55">55</a><span>Entre la segunda y cuarta hora de competencia identificar qué problemas difíciles se intentarán resolver.</span></li>
+<li id="consejo-56"><a class="num" href="#consejo-56" aria-label="Enlace al consejo 56">56</a><span>Abordar los problemas difíciles desde más temprano si se estima que de esta forma se resolverá una mayor cantidad de problemas, estando conscientes de que eso conlleva el riesgo de una mayor penalidad por tiempo.</span></li>
+<li id="consejo-57"><a class="num" href="#consejo-57" aria-label="Enlace al consejo 57">57</a><span>Si se decide trabajar en un problema difícil, empezar lo más antes posible.</span></li>
+<li id="consejo-58"><a class="num" href="#consejo-58" aria-label="Enlace al consejo 58">58</a><span>Procurar resolver los problemas difíciles en equipo.</span></li>
+</ol>
+<p>En la fase intermedia de la competencia es cuando los cerebros ya están calientes, y es la oportunidad para resolver los problemas más importantes. Es importante tener clara la situación y asignar los problemas correctos a los integrantes adecuados. Las decisiones que se tomen acá se reflejan en cómo se sentirá el equipo al final de la competencia: si agotado o listo para correr el último sprint.</p>
+<p>Un detalle sobre el consejo <a class="ref-consejo" href="#consejo-56">56</a>, es que está inspirado en el artículo de Trotman &amp; Handley <a class="cita" href="#ref-trotman2008">[11]</a>, donde primeramente se demuestra que encontrar la estrategia óptima para maximizar la cantidad de problemas resueltos es un problema NP-completo. Es por eso que argumentan que en ocasiones, enfocarse en los problemas difíciles desde más temprano, en ciertas ocasiones permite resolver más problemas en total, lo que se traduce a una mejor posición en el ranking final. También, muestran que si el objetivo es minimizar la penalidad por tiempo, basta con resolver los problemas en orden de dificultad ascendente. Es por eso que es crucial contar con buen criterio para poder identificar si es que la situación amerita reducir la penalidad por tiempo, apostar por resolver más problemas en total o buscar un equilibrio entre ambos extremos.</p>
+<h3 id="juego-final">Juego final</h3>
+<ol class="consejos">
+<li id="consejo-59"><a class="num" href="#consejo-59" aria-label="Enlace al consejo 59">59</a><span>En la última hora y media de competencia, incrementar la prioridad al uso de la computadora para la depuración de errores.</span></li>
+<li id="consejo-60"><a class="num" href="#consejo-60" aria-label="Enlace al consejo 60">60</a><span>Al iniciar la última hora de competencia, analizar la situación del equipo en la competencia y decidir en qué problemas se trabajará.</span></li>
+<li id="consejo-61"><a class="num" href="#consejo-61" aria-label="Enlace al consejo 61">61</a><span>En la última media hora de competencia, concentrarse únicamente en un problema los tres integrantes del equipo al mismo tiempo.</span></li>
+</ol>
+<p>En la fase final de una competencia ICPC, las decisiones difíciles son tomadas, si apostar por varios problemas o elegir uno sólo y dejar los demás. Al igual que las demás fases, el apoyo y colaboración de todo el equipo es necesario. Aquí se demuestra la fortaleza mental después de 4 horas de competencia, es cuando una vez una decisión es tomada, se deja de lado las emociones y se da todo lo que se tiene para cumplir el objetivo final.</p>
+<p>Siempre es posible que existan excepciones, pero los datos estadísticos muestran lo que sucede en la mayoría de los casos. En este periodo la cantidad de envíos suele ser mayor al del resto de la competencia, pero la proporción de envíos versus soluciones aceptadas es la menor, de igual forma la cantidad de soluciones aceptadas no es mayor. Esto puede observarse en las figuras a continuación, las cuales ilustran este fenómeno con datos de la etapa regional latinoamericana ICPC 2024.</p>
+<figure><img src="envios.png" width="3840" height="2880" alt="Gráfico de estadísticas de la regional latinoamericana ICPC 2024" loading="lazy"><figcaption>Fuente: <a href="https://scorelatam.naquadah.com.br/latam-2024/Statistics.html">scorelatam.naquadah.com.br/latam-2024/Statistics.html</a></figcaption></figure>
+<figure><img src="aceptados.png" width="3840" height="2880" alt="Gráfico de estadísticas de la regional latinoamericana ICPC 2024" loading="lazy"><figcaption>Fuente: <a href="https://scorelatam.naquadah.com.br/latam-2024/Statistics.html">scorelatam.naquadah.com.br/latam-2024/Statistics.html</a></figcaption></figure>
+<h3 id="actitud-y-enfoque-competitivo">Actitud y enfoque competitivo</h3>
+<ol class="consejos">
+<li id="consejo-62"><a class="num" href="#consejo-62" aria-label="Enlace al consejo 62">62</a><span>Durante la competencia, actuar objetivamente, enfocándose en resolver la mayor cantidad de problemas con la menor penalización posible.</span></li>
+<li id="consejo-63"><a class="num" href="#consejo-63" aria-label="Enlace al consejo 63">63</a><span>Durante la competencia, procurar actuar de tal forma que se minimicen los errores.</span></li>
+<li id="consejo-64"><a class="num" href="#consejo-64" aria-label="Enlace al consejo 64">64</a><span>Evitar peleas y tonos defensivos entre compañeros de equipo.</span></li>
+<li id="consejo-65"><a class="num" href="#consejo-65" aria-label="Enlace al consejo 65">65</a><span>No perder los estribos durante la competencia y siempre tratar de dar lo mejor de uno mismo.</span></li>
+<li id="consejo-66"><a class="num" href="#consejo-66" aria-label="Enlace al consejo 66">66</a><span>Ya que no se tiene información perfecta, tomar riesgos.</span></li>
+</ol>
+<p>La actitud que se adopta durante la competencia impacta en el rendimiento del equipo. Actuar con objetividad, mantener la calma y generar un ambiente de respeto permite tomar mejores decisiones incluso en momentos críticos.</p>
+<h3 id="lectura-de-problemas">Lectura de problemas</h3>
+<ol class="consejos">
+<li id="consejo-67"><a class="num" href="#consejo-67" aria-label="Enlace al consejo 67">67</a><span>Al inicio de la competencia, echar un vistazo a los enunciados de los problemas para elegir cual leer primero basándose en intuición y simplicidad del enunciado.</span></li>
+<li id="consejo-68"><a class="num" href="#consejo-68" aria-label="Enlace al consejo 68">68</a><span>Al inicio de la competencia, hacer lecturas rápidas de los problemas con el objetivo inicial de identificar los más fáciles.</span></li>
+<li id="consejo-69"><a class="num" href="#consejo-69" aria-label="Enlace al consejo 69">69</a><span>Al leer un problema, identificar si los primeros párrafos son una historia no relacionada a lo que te pide el problema para saltarse esa parte.</span></li>
+<li id="consejo-70"><a class="num" href="#consejo-70" aria-label="Enlace al consejo 70">70</a><span>Al leer un problema, prestar atención a cada vez que aparece algún número o variable.</span></li>
+<li id="consejo-71"><a class="num" href="#consejo-71" aria-label="Enlace al consejo 71">71</a><span>Al leer un problema, prestar atención a definiciones o descripciones de procedimientos, estos suelen estar listados.</span></li>
+<li id="consejo-72"><a class="num" href="#consejo-72" aria-label="Enlace al consejo 72">72</a><span>Al leer un problema, prestar atención a las últimas oraciones del enunciado, ahí suelen resumir en pocas palabras qué es lo que pide el problema.</span></li>
+<li id="consejo-73"><a class="num" href="#consejo-73" aria-label="Enlace al consejo 73">73</a><span>Al leer un problema, prestar atención a los límites establecidos en la descripción del input, esto suele dar pistas acerca de qué técnicas o algoritmos se pueden aplicar para la resolución del problema.</span></li>
+<li id="consejo-74"><a class="num" href="#consejo-74" aria-label="Enlace al consejo 74">74</a><span>Al leer un problema, prestar atención a la descripción del output, esto suele describir en pocas palabras lo que pide el problema.</span></li>
+<li id="consejo-75"><a class="num" href="#consejo-75" aria-label="Enlace al consejo 75">75</a><span>Al leer un problema, tener en cuenta que si algo no está escrito en el enunciado, no significa que sea falso, y si algo no está escrito en el enunciado, no significa que sea verdadero.</span></li>
+<li id="consejo-76"><a class="num" href="#consejo-76" aria-label="Enlace al consejo 76">76</a><span>Leer detalladamente un problema si no se cuenta con la suficiente confianza o experiencia para determinar que se lo ha entendido en la primera leída.</span></li>
+<li id="consejo-77"><a class="num" href="#consejo-77" aria-label="Enlace al consejo 77">77</a><span>Al leer detalladamente un problema, formular preguntas después de leer cada oración, por ejemplo: ¿Esto qué significa realmente? ¿Esto puede dar origen a algún caso especial? ¿Será que este detalle sea crucial para hallar la solución al problema? ¿Es esta información útil?</span></li>
+<li id="consejo-78"><a class="num" href="#consejo-78" aria-label="Enlace al consejo 78">78</a><span>Leer detalladamente un problema si es que no surgen ideas para abordar la solución, con el propósito de encontrar nuevos detalles.</span></li>
+<li id="consejo-79"><a class="num" href="#consejo-79" aria-label="Enlace al consejo 79">79</a><span>Leer detalladamente un problema si es que no se ha conseguido un veredicto aceptado al enviarlo.</span></li>
+</ol>
+<p>El poder leer y entender de qué trata un problema rápidamente ahorra tiempo valioso. Entender mal un problema puede resultar en algo catastrófico. Mayor velocidad, mayor entendimiento y mejores trucos se consiguen, como siempre, entrenando. Es importante tomar en cuenta que, una correcta lectura y comprensión de los enunciados es el primer paso hacia la resolución de los problemas y una forma de evitar errores graves causados por descuidos.</p>
+<h3 id="resolucion-de-problemas">Resolución de problemas</h3>
+<ol class="consejos">
+<li id="consejo-80"><a class="num" href="#consejo-80" aria-label="Enlace al consejo 80">80</a><span>Hacer una lluvia de ideas de algoritmos posibles que puedan resolver el problema y elegir el más fácil de modelar y codificar que funcione.</span></li>
+<li id="consejo-81"><a class="num" href="#consejo-81" aria-label="Enlace al consejo 81">81</a><span>Utilizar modelado matemático, transformación del problema o proposición de conjeturas con el fin de simplificar la solución del problema o el diseño del algoritmo.</span></li>
+<li id="consejo-82"><a class="num" href="#consejo-82" aria-label="Enlace al consejo 82">82</a><span>Cuando el problema requiera de cálculos matemáticos, anotar con claridad en papel las fórmulas simplificadas, listas para copiarlas directamente en el código.</span></li>
+<li id="consejo-83"><a class="num" href="#consejo-83" aria-label="Enlace al consejo 83">83</a><span>Para abordar un problema desafiante, proceder con calma, seleccionar los detalles relevantes y usarlos para deducir nuevos aspectos, formando así una cadena de implicaciones que lleve a la solución.</span></li>
+<li id="consejo-84"><a class="num" href="#consejo-84" aria-label="Enlace al consejo 84">84</a><span>Evitar la visión de túnel, mantener la mente abierta y si un problema no sale, pasarse a otro o intentar otras aproximaciones a la solución.</span></li>
+</ol>
+<p>En general, el consejo más habitual para mejorar en la resolución de problemas es simplemente resolver problemas y de cierta forma desarrollar un método propio para la resolución de problemas. El libro <em>How to Solve It</em> de George Pólya <a class="cita" href="#ref-polya1957">[8]</a> ofrece una excelente base para quienes desean estructurar y construir su propio método de resolución. Incluso si no se lo lee por completo, la estructura general presentada en los primeros capítulos es suficiente como punto de partida para sistematizar el pensamiento.</p>
+<p>Paralelamente, desarrollar una buena intuición es altamente beneficioso. Colin Galen, un programador competitivo conocido por haber alcanzado el rango de grandmaster en Codeforces rápidamente y por compartir sus conocimientos en su canal de YouTube, cuenta con un video muy útil respecto a cómo desarrollar intuición en el ámbito de la programación competitiva. Se recomienda su video titulado <em>Unlocking Your Intuition: How to Solve Hard Problems Easily</em> <a class="cita" href="#ref-colingalen2022">[4]</a>.</p>
+<h3 id="quien-es-el-programador">¿Quién es el programador?</h3>
+<ol class="consejos">
+<li id="consejo-85"><a class="num" href="#consejo-85" aria-label="Enlace al consejo 85">85</a><span>Optar por que una sola persona escriba el código de la solución.</span></li>
+<li id="consejo-86"><a class="num" href="#consejo-86" aria-label="Enlace al consejo 86">86</a><span>Al resolver un problema en grupo, optar por que la persona que estime menor tiempo para programar la solución lo haga, considerando su experiencia y conocimiento en el tema.</span></li>
+<li id="consejo-87"><a class="num" href="#consejo-87" aria-label="Enlace al consejo 87">87</a><span>Si varios miembros pueden implementar la solución al mismo problema en un tiempo similar, elegir quién escribirá el código según sus habilidades y su capacidad para abordar los problemas restantes, priorizando el balance de la carga de trabajo.</span></li>
+<li id="consejo-88"><a class="num" href="#consejo-88" aria-label="Enlace al consejo 88">88</a><span>Cuando dos integrantes tengan cada uno un problema distinto listo para programar, priorizar el que se estime que tomará menos tiempo implementar su código.</span></li>
+</ol>
+<p>Elegir quien programará cada solución ayuda a mantener la fluidez en la competencia y minimizar los errores. Este tipo de decisiones conviene tomarlas siendo objetivos y dejando los intereses personales de lado.</p>
+<h3 id="escritura-de-codigo">Escritura de código</h3>
+<ol class="consejos">
+<li id="consejo-89"><a class="num" href="#consejo-89" aria-label="Enlace al consejo 89">89</a><span>Antes de comenzar a escribir código, escribir en papel la composición del código a ser escrito a grandes rasgos, el ideal es escribir código sin dudar y reducir el tiempo de depuración al mínimo.</span></li>
+<li id="consejo-90"><a class="num" href="#consejo-90" aria-label="Enlace al consejo 90">90</a><span>Si la computadora está ocupada y se tiene pensado el diseño del algoritmo para un problema, escribir en papel el código de la solución.</span></li>
+<li id="consejo-91"><a class="num" href="#consejo-91" aria-label="Enlace al consejo 91">91</a><span>En una competencia oficial, si se necesita un algoritmo que está escrito en el team notebook, copiarlo del notebook.</span></li>
+<li id="consejo-92"><a class="num" href="#consejo-92" aria-label="Enlace al consejo 92">92</a><span>Cada que se escriba un bloque de código, por ejemplo, lectura de datos o la construcción de una estructura, compilar el código y corregir los errores de sintaxis.</span></li>
+<li id="consejo-93"><a class="num" href="#consejo-93" aria-label="Enlace al consejo 93">93</a><span>Cada que se escriba un bloque de código, leerlo y revisar si existe algún error lógico o de escritura.</span></li>
+<li id="consejo-94"><a class="num" href="#consejo-94" aria-label="Enlace al consejo 94">94</a><span>Durante la escritura de código escribir comentarios resaltando la lógica de cada bloque de código.</span></li>
+<li id="consejo-95"><a class="num" href="#consejo-95" aria-label="Enlace al consejo 95">95</a><span>Usar memoria extra si es que ayuda a simplificar la solución o acelerar el algoritmo.</span></li>
+<li id="consejo-96"><a class="num" href="#consejo-96" aria-label="Enlace al consejo 96">96</a><span>Utilizar fuerza bruta en cuanto se pueda, los algoritmos de fuerza bruta suelen ser más fáciles de implementar.</span></li>
+<li id="consejo-97"><a class="num" href="#consejo-97" aria-label="Enlace al consejo 97">97</a><span>No escribir código lo más rápido ni lo más corto posible; priorizar la claridad y simplicidad.</span></li>
+</ol>
+<p>En sí, lo que se busca optimizar al escribir código es obtener lo más rápido posible un veredicto aceptado, con la menor penalidad por tiempo posible y sin ocupar el computador más tiempo del necesario. Para obtener aquello, es necesario hallar el equilibrio entre el tiempo dedicado a planificar, diseñar, codificar, probar y, si es necesario, depurar.</p>
+<h3 id="rutinas-de-apoyo">Rutinas de apoyo</h3>
+<ol class="consejos">
+<li id="consejo-98"><a class="num" href="#consejo-98" aria-label="Enlace al consejo 98">98</a><span>Solo usar la computadora para escribir, evitar pensar mientras se ocupa la computadora.</span></li>
+<li id="consejo-99"><a class="num" href="#consejo-99" aria-label="Enlace al consejo 99">99</a><span>Armar casos de prueba a mano para probar el código antes de enviarlo; un compañero que no esté codificando podría asistir en esta tarea.</span></li>
+<li id="consejo-100"><a class="num" href="#consejo-100" aria-label="Enlace al consejo 100">100</a><span>Antes de enviar el código, realizar una revisión rápida a la lógica de la solución y a la estructura del código.</span></li>
+<li id="consejo-101"><a class="num" href="#consejo-101" aria-label="Enlace al consejo 101">101</a><span>En una competencia oficial, mandar a imprimir el código inmediatamente después de enviar una solución al juez, para poder revisarlo sin ocupar la computadora en caso de ser rechazado.</span></li>
+<li id="consejo-102"><a class="num" href="#consejo-102" aria-label="Enlace al consejo 102">102</a><span>Durante la competencia, guardar todas las versiones del código que se escriban.</span></li>
+</ol>
+<p>En competencias donde los recursos son limitados, como el tiempo y el uso compartido del computador, es vital establecer rutinas claras y consistentes para aprovechar al máximo dichos recursos y, al mismo tiempo, resolver la mayor cantidad de problemas con la menor penalidad de tiempo posible.</p>
+<h3 id="control-de-danos">Control de daños</h3>
+<ol class="consejos">
+<li id="consejo-103"><a class="num" href="#consejo-103" aria-label="Enlace al consejo 103">103</a><span>Si un envío es rechazado por el juez, no entrar en pánico, enfocarse en encontrar el error.</span></li>
+<li id="consejo-104"><a class="num" href="#consejo-104" aria-label="Enlace al consejo 104">104</a><span>Evitar buscar errores en el código leyendo detalladamente línea por línea mientras se ocupa la computadora.</span></li>
+<li id="consejo-105"><a class="num" href="#consejo-105" aria-label="Enlace al consejo 105">105</a><span>Para detectar errores en el código durante la depuración, escribir rutinas de impresión del estado de las variables en varios bloques de código, hacer correr contra varios casos de prueba, imprimir físicamente los resultados y analizarlos dejando la computadora libre.</span></li>
+<li id="consejo-106"><a class="num" href="#consejo-106" aria-label="Enlace al consejo 106">106</a><span>No borrar las rutinas de impresión que se escribieron para depuración de código, mejor es comentarlas.</span></li>
+<li id="consejo-107"><a class="num" href="#consejo-107" aria-label="Enlace al consejo 107">107</a><span>Para validar o encontrar errores en el código, hacer pruebas de estrés, generar casos de prueba aleatorios y probar el código contra una solución menos eficiente, de la cual se tenga certeza de su correctitud.</span></li>
+<li id="consejo-108"><a class="num" href="#consejo-108" aria-label="Enlace al consejo 108">108</a><span>Después de 5 envíos incorrectos, pasarse a otro problema.</span></li>
+</ol>
+<p>Aunque se intente minimizarlos, los errores suelen ser inevitables. Por eso, es necesario tener mecanismos de compensación, los cuales pueden marcar una gran diferencia. Mantener la calma, aplicar técnicas de depuración y saber cuándo cambiar de problema son habilidades que se desarrollan con la experiencia y reflejan la madurez competitiva.</p>
+<p>El consejo <a class="ref-consejo" href="#consejo-108">108</a> es más relevante para competidores iniciales, pero cualquiera puede caer en la trampa y la ceguera de aferrarse a un problema mal resuelto. Esto está respaldado por el estudio de Revilla, Manzoor y Lui <a class="cita" href="#ref-revilla2008">[9]</a>, quienes señalan que cuando un competidor comete un tipo particular de error en un problema, tiende a repetirlo. También, observan que en promedio si alguien recibe 5 veredictos rechazados seguidos, el siguiente envío es 4 veces más probable de ser rechazado qué aceptado.</p>
+</section>
+<section id="despues-de-la-competencia">
+<h2>Después de la competencia</h2>
+<p>Prácticas orientadas a la retrospección y mejora continua tras la participación en competencias.</p>
+<ol class="consejos">
+<li id="consejo-109"><a class="num" href="#consejo-109" aria-label="Enlace al consejo 109">109</a><span>No decepcionarse por tener un desempeño no deseado en alguna competencia.</span></li>
+<li id="consejo-110"><a class="num" href="#consejo-110" aria-label="Enlace al consejo 110">110</a><span>Después de una simulación o competencia oficial, discutir con el equipo qué se hizo bien, qué se hizo mal y qué se puede mejorar, también evaluar el desempeño de las estrategias aplicadas.</span></li>
+<li id="consejo-111"><a class="num" href="#consejo-111" aria-label="Enlace al consejo 111">111</a><span>Después de simular o participar en una competencia resolver un problema que se podía haber resuelto en la competencia, pero por motivos de tiempo o toma de decisiones no se logró.</span></li>
+<li id="consejo-112"><a class="num" href="#consejo-112" aria-label="Enlace al consejo 112">112</a><span>Después de simular o participar en una competencia resolver un problema que tomaría una cantidad exagerada de tiempo en resolver, o que no se cuente con la suficiente capacidad o el conocimiento para resolverlo. Hacerlo con ayuda de la editorial y con la lectura de códigos aceptados de ese problema o con la ayuda de otra persona que sí lo resolvió.</span></li>
+</ol>
+<p>En su libro, soullless <a class="cita" href="#ref-soullless2025">[10]</a> destaca en el capítulo acerca de la mentalidad de los campeones, resalta que el ganar no se trata de nunca perder, sino de mantenerse en el juego incluso cuando todo parece derrumbarse. También recalca que un mal resultado solo es un punto en el gráfico y no representa todo el trayecto. Y pues, Así concluye el ciclo de la mejora continua: empezando de nuevo y siempre avanzando un poco más. Entonces, la directiva de entrenamiento se resume a: competir, resolver problemas pendientes, estudiar, resolver problemas avanzados, descansar y repetir.</p>
+</section>
+<section id="bonus">
+<h2>Bonus</h2>
+<ul class="bonus">
+<li>Comprender los límites de tiempo utilizando la complejidad en Big O (constante &lt; log n &lt; n &lt; n<sup>2</sup> &lt; n<sup>3</sup> &lt; 2<sup>n</sup> &lt; n!) y aproximar el tiempo de ejecución, recordando que entre 10<sup>8</sup> y 10<sup>9</sup> operaciones suelen tomar alrededor de un segundo.</li>
+<li>Comprender los límites de memoria usando la complejidad en Big O, recordando que 1 entero ocupa 32 bits, 1 byte equivale a 8 bits, 1 kilobyte son 1024 bytes, y 1 megabyte son 1024 kilobytes.</li>
+<li>Contar con una base matemática sólida (álgebra, teoría de sets, lógica, combinatoria y conteo).</li>
+<li>Aprender a probar enunciados condicionales (prueba directa, prueba por contraposición, prueba por contradicción)</li>
+<li>Reconocer que los temas difíciles requieren tiempo, paciencia y que no es común dominarlos de la noche a la mañana.</li>
+<li>Entender que la habilidad y conocimiento en programación competitiva se construyen paso a paso a lo largo del tiempo.</li>
+<li>Merodear constantemente a través de los límites del practicante, permitiendo gradualmente superar fronteras previamente establecidas.</li>
+<li>Evitar usar tipos de datos de punto flotante (float, double), priorizar el uso de enteros</li>
+<li>Para competencias individuales resolver los problemas en orden del más fácil hacía el más difícil.</li>
+<li>Divertirse</li>
+<li>Evitar el uso de punteros y memoria dinámica cuando se pueda optar por estructuras más simples y eficientes.</li>
+<li>Utilizar macros de preprocesador en C++ para simplificar y agilizar la escritura de código.</li>
+<li>Utilizar alias de tipo, como 'typedef' o 'using' en C++, para una escritura de código más rápida.</li>
+</ul>
+</section>
+<section id="epilogo">
+<h2>Epílogo</h2>
+<p>El uso óptimo del algoritmo de estimación de tiempos, la re–priorización de problemas en base al menor tiempo estimado para obtener un AC, la idea de usar una cola de prioridad para gestionar los ACs, y saber cuándo ceder la computadora a un compañero con un AC más rápido: todo eso es algo que hubiera querido saber antes. Habría salvado muchas competencias, desde las IOI hasta la ICPC.</p>
+<p>Entender que, al principio, no puedes estimar bien tu tiempo de AC es normal. Con el tiempo, madurarás y serás más perspicaz para saber dónde estás parado, y eso es lo importante. Uno no gana una competencia el día del concurso; se gana meses antes. Porque quien se prepara para la tormenta, duerme tranquilo la noche anterior. Uno gana la guerra mucho antes de que empiece.</p>
+<p>No importa si no tomas el camino “óptimo” para llegar a ser un buen programador. No importa si resuelves los problemas de manera lógica e intuitiva, si entiendes la teoría al 100%, o si aprendes leyendo código y presentaciones. Al final, el resultado se medirá en la cantidad de Accepted que obtengas. Incluso si no es durante el contest, un AC en upsolve vale lo mismo: significa que creciste.</p>
+<p>Aunque el camino sea largo y haya errores, el mayor talento que uno puede tener no es el IQ, sino la perseverancia y la disciplina. Ese es el talento que todos tienen, pero muy pocos deciden cultivar. Te sorprendería hasta dónde puedes llegar con solo disciplina.</p>
+<p class="firma">Ronaldo Franco<br>Cochabamba, Bolivia<br>2025</p>
+</section>
+<section id="referencias">
+<h2>Referencias</h2>
+<ol class="referencias">
+<li id="ref-amraii2007">Amraii, S. A. (2007). <em>Observations on teamwork strategies in the ACM International Collegiate Programming Contest.</em> Crossroads, 14(1), 9. <a href="https://doi.org/10.1145/1349332.1349341">https://doi.org/10.1145/1349332.1349341</a></li>
+<li id="ref-arefin2006">Arefin, A. S. (2006). <em>Game plan for a contest. In A. S. Arefin, Art of Programming Contest: C Programming Tutorials, Data Structures, Algorithms</em> (pp. 19–26). <a href="http://182.160.97.198:8080/xmlui/handle/123456789/962">http://182.160.97.198:8080/xmlui/handle/123456789/962</a></li>
+<li id="ref-bloomfield2016">Bloomfield, A., &amp; Sotomayor, B. (2016). <em>A programming contest strategy guide.</em> Proceedings of the 47th ACM Technical Symposium on Computing Science Education. <a href="https://doi.org/10.1145/2839509.2844642">https://doi.org/10.1145/2839509.2844642</a></li>
+<li id="ref-colingalen2022">ColinGalen. (2022, noviembre 9). <em>Unlocking your intuition: How to solve hard problems easily</em> [Video]. YouTube. <a href="https://www.youtube.com/watch?v=1f6N2UrCK6o">https://www.youtube.com/watch?v=1f6N2UrCK6o</a></li>
+<li id="ref-ernst1996">Ernst, F., Moelands, J., &amp; Pieterse, S. (1996). <em>Teamwork in programming contests: 3*1=4.</em> Crossroads, 3(2). <a href="https://doi.org/10.1145/332132.332139">https://doi.org/10.1145/332132.332139</a></li>
+<li id="ref-liu2008">Liu, R. (2008). <em>Training ICPC teams: A technical guide</em>. CLIS, Banff. <a href="https://www.cs.montana.edu/paxton/classes/ravensburg/materials/TrainingICPC.pdf">https://www.cs.montana.edu/paxton/classes/ravensburg/materials/TrainingICPC.pdf</a></li>
+<li id="ref-manzoor2001">Manzoor, S. (2001). <em>Common mistakes in online and real-time contests.</em> XRDS: Crossroads, The ACM Magazine for Students, 14, 10–16. <a href="http://arantxa.ii.uam.es/~swerc/p10-manzoor.pdf">http://arantxa.ii.uam.es/~swerc/p10-manzoor.pdf</a></li>
+<li id="ref-polya1957">Pólya, G. (1957). <em>How to solve it: A new aspect of mathematical method (2nd ed.).</em> Princeton University Press.</li>
+<li id="ref-revilla2008">Revilla, M. A., Manzoor, S., &amp; Liu, R. (2008). <em>Competitive learning in informatics: The UVa Online Judge experience.</em> Olympiads in Informatics, 2, 131–148. <a href="https://ioinformatics.org/journal/INFOL035.pdf">https://ioinformatics.org/journal/INFOL035.pdf</a></li>
+<li id="ref-soullless2025">soullless. (2025). <em>I Wrote a Book — For Those Who Truly Want to Grow</em> [Entrada de blog]. Codeforces. <a href="https://codeforces.com/blog/entry/141116">https://codeforces.com/blog/entry/141116</a></li>
+<li id="ref-trotman2008">Trotman, A., &amp; Handley, C. M. (2008). <em>Programming contest strategy.</em> Computers &amp; Education, 50(3), 821–837. <a href="https://doi.org/10.1016/j.compedu.2006.08.008">https://doi.org/10.1016/j.compedu.2006.08.008</a></li>
+</ol>
+</section>
+      <div class="fin">
+        <p>¿Prefieres leerlo en papel o sin conexión?</p>
+        <a class="boton" href="pachabook.pdf" download>Descargar PDF</a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var nav = document.getElementById("indice");
+      var boton = document.getElementById("boton-indice");
+      var progreso = document.getElementById("progreso");
+
+      // Índice desplegable en celular
+      boton.addEventListener("click", function () {
+        var abierto = nav.classList.toggle("abierto");
+        boton.setAttribute("aria-expanded", abierto);
+      });
+      nav.addEventListener("click", function (e) {
+        if (e.target.tagName === "A") {
+          nav.classList.remove("abierto");
+          boton.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      // Resaltar en el índice la sección que se está leyendo
+      var enlaces = {};
+      nav.querySelectorAll("a").forEach(function (a) { enlaces[a.getAttribute("href").slice(1)] = a; });
+      var titulos = Array.prototype.slice.call(document.querySelectorAll("main h2, main h3"))
+        .map(function (h) { return h.tagName === "H2" ? h.parentElement : h; });
+      function actualizar() {
+        var limite = window.innerHeight * 0.3, actual = null;
+        titulos.forEach(function (el) {
+          if (el.getBoundingClientRect().top < limite) actual = el;
+        });
+        Object.keys(enlaces).forEach(function (k) { enlaces[k].classList.remove("activo"); });
+        if (actual && enlaces[actual.id]) enlaces[actual.id].classList.add("activo");
+
+        var total = document.documentElement.scrollHeight - window.innerHeight;
+        progreso.style.width = (total > 0 ? (window.scrollY / total) * 100 : 0) + "%";
+      }
+      window.addEventListener("scroll", actualizar, { passive: true });
+      actualizar();
+
+      // Al abrir un enlace a un consejo (#consejo-N), volver a ubicarlo cuando
+      // terminen de cargar las fuentes, que cambian la altura del texto.
+      if (location.hash && document.fonts) {
+        document.fonts.ready.then(function () {
+          var destino = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+          if (destino) destino.scrollIntoView({ behavior: "instant" });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

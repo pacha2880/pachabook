@@ -4,7 +4,7 @@
 
 Guía de bolsillo con consejos prácticos para el entrenamiento y la competencia en programación competitiva universitaria (ICPC): desde los primeros pasos, pasando por el entrenamiento individual y en equipo, hasta qué hacer antes, durante y después de una competencia.
 
-📖 **[Descargar el PDF](pachabook.pdf)** · 🌐 **[Página web](https://pacha2880.github.io/pachabook/)**
+📖 **[Descargar el PDF](pachabook.pdf)** · 🌐 **[Página web](https://pacha2880.github.io/pachabook/)** · 📚 **[Leer en línea](https://pacha2880.github.io/pachabook/libro.html)**
 
 ## Contenido
 
@@ -28,7 +28,7 @@ Guía de bolsillo con consejos prácticos para el entrenamiento y la competencia
 | `tapa.png`, `contratapa.png` | Tapa y contratapa (incluyen 3 mm de sangrado) |
 | `aceptados.png`, `envios.png` | Imágenes usadas en el contenido |
 | `pachabook.pdf` | Libro compilado |
-| `index.html`, `web/` | Página web (GitHub Pages). Tras cambiar los consejos: `py -3 web/generar_consejos.py` |
+| `index.html`, `libro.html`, `web/` | Página web (GitHub Pages). Tras cambiar `contenido.tex`: `py -3 web/generar_web.py` |
 
 ## Compilar
 
