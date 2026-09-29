@@ -1,0 +1,48 @@
+# En cada push a main: compila el PDF, genera la web y la publica en GitHub Pages.
+# Requiere: Settings → Pages → Source: "GitHub Actions".
+name: Publicar
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # permite ejecutarlo a mano desde la pestaña Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compilar PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          args: -xelatex -jobname=pachabook -file-line-error -halt-on-error -interaction=nonstopmode
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generar web
+        run: |
+          pip install pillow
+          python web/generar_web.py
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deploy
+        uses: actions/deploy-pages@v4

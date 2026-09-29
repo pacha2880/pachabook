@@ -8,7 +8,15 @@
 % ---- Paquetes ----
 \usepackage[spanish]{babel}
 \usepackage{fontspec}
-\setmainfont{TeX Gyre Heros} % Sans tipo poster
+% Sans tipo poster (TeX Gyre Heros). Se carga por nombre de archivo para que
+% funcione igual en Windows y en Linux (GitHub Actions).
+\setmainfont{texgyreheros}[
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-italic,
+  BoldItalicFont = *-bolditalic
+]
 \usepackage{microtype}
 \usepackage{geometry}
 \usepackage{ragged2e}

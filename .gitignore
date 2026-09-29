@@ -7,3 +7,8 @@
 *.fdb_latexmk
 *.xdv
 main.pdf
+
+# Generados por GitHub Actions (ver .github/workflows/publicar.yml)
+pachabook.pdf
+libro.html
+web/consejos.js
