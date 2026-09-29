@@ -16,6 +16,7 @@ from PIL import Image
 
 RAIZ = Path(__file__).resolve().parent.parent
 TEX = RAIZ / "contenido.tex"
+MAIN = RAIZ / "main.tex"
 PLANTILLA = RAIZ / "web" / "plantilla_libro.html"
 
 
@@ -250,8 +251,21 @@ def indice_html(indice):
     return "\n".join(partes)
 
 
+def epigrafe(libro):
+    """Toma el epígrafe (quote + autor) de la sección EPÍGRAFE de main.tex."""
+    tex = MAIN.read_text(encoding="utf-8")
+    m = re.search(r"EPÍGRAFE.*?\\begin\{quote\}(.*?)\\end\{quote\}\s*\\hfill\s*--\s*(.+?)\n", tex, re.S)
+    if not m:
+        return ""
+    frase = libro.en_linea(m.group(1))
+    autor = libro.en_linea(m.group(2))
+    return (f'<figure class="epigrafe"><blockquote><p>{frase}</p></blockquote>'
+            f"<figcaption>— {autor}</figcaption></figure>")
+
+
 def main():
     libro, cuerpo = convertir(TEX.read_text(encoding="utf-8"))
+    cuerpo = epigrafe(libro) + "\n" + cuerpo
 
     pagina = PLANTILLA.read_text(encoding="utf-8")
     pagina = pagina.replace("{{INDICE}}", indice_html(libro.indice))
