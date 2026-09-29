@@ -4,7 +4,7 @@
 
 Guía de bolsillo con consejos prácticos para el entrenamiento y la competencia en programación competitiva universitaria (ICPC): desde los primeros pasos, pasando por el entrenamiento individual y en equipo, hasta qué hacer antes, durante y después de una competencia.
 
-📖 **[Descargar el PDF](pachabook.pdf)** · 🌐 **[Página web](https://pacha2880.github.io/pachabook/)** · 📚 **[Leer en línea](https://pacha2880.github.io/pachabook/libro.html)**
+📖 **[Ver el PDF](pachabook.pdf)** · 🌐 **[Página web](https://pacha2880.github.io/pachabook/)** · 📚 **[Leer en línea](https://pacha2880.github.io/pachabook/libro.html)**
 
 ## Contenido
 
