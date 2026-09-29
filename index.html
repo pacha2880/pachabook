@@ -174,8 +174,8 @@
     .tarjeta .numero a { color: inherit; text-decoration: none; }
     .tarjeta .numero a:hover { text-decoration: underline; text-decoration-thickness: 3px; }
     .tarjeta .ir { font: 600 1rem/1 var(--titulos); letter-spacing: .06em; opacity: .75; margin-left: 6px; vertical-align: middle; }
-    .tarjeta.vacia { display: flex; flex-direction: column; justify-content: center; }
-    .tarjeta.vacia .numero { opacity: .5; }
+    .tarjeta.aparece { animation: aparece .35s ease-out; }
+    @keyframes aparece { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
     /* Pie */
     footer.pie {
@@ -199,6 +199,7 @@
       .cita { font-size: 1.15rem; }
     }
     @media (prefers-reduced-motion: reduce) {
+      .tarjeta.aparece { animation: none; }
       html { scroll-behavior: auto; }
       .boton { transition: none; }
     }
@@ -216,7 +217,7 @@
         <p class="franja">112 CONSEJOS PARA DOMINAR LA ICPC</p>
         <p class="autor">Rodrigo Salguero</p>
         <div class="botones">
-          <a class="boton boton-principal" href="pachabook.pdf" target="_blank" rel="noopener">
+          <a class="boton boton-principal" href="pachabook.pdf">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
             Ver PDF
           </a>
@@ -240,13 +241,13 @@
     <section id="consejo" class="azar">
       <div class="contenedor">
         <div class="cabecera-azar">
-          <h2>Consejo al azar</h2>
-          <button class="boton boton-principal" id="azar" type="button">Consejo al azar</button>
+          <h2>Consejo del día</h2>
+          <button class="boton boton-principal" id="otro" type="button"><span aria-hidden="true">🎲</span> Otro consejo</button>
         </div>
-        <article class="tarjeta vacia" id="tarjeta" aria-live="polite">
-          <p class="numero" id="c-numero">?</p>
-          <p class="seccion" id="c-seccion" hidden></p>
-          <p class="texto" id="c-texto">Pulsa el botón para descubrir uno de los 112 consejos.</p>
+        <article class="tarjeta" id="tarjeta" aria-live="polite">
+          <p class="numero" id="c-numero"></p>
+          <p class="seccion" id="c-seccion"></p>
+          <p class="texto" id="c-texto">Lee los 112 consejos en el <a href="libro.html">libro en línea</a>.</p>
         </article>
       </div>
     </section>
@@ -269,11 +270,8 @@
       var texto = document.getElementById("c-texto");
       var actual = -1;
 
-      document.getElementById("azar").addEventListener("click", function () {
-        var i;
-        do { i = Math.floor(Math.random() * CONSEJOS.length); } while (i === actual && CONSEJOS.length > 1);
+      function mostrar(i) {
         actual = i;
-
         // El número lleva al consejo dentro del libro en línea
         var enlace = document.createElement("a");
         enlace.href = "libro.html#consejo-" + (i + 1);
@@ -284,11 +282,26 @@
         ir.textContent = "Leer en el libro →";
         enlace.appendChild(ir);
         numero.replaceChildren(enlace);
-
         seccion.textContent = CONSEJOS[i].seccion;
-        seccion.hidden = false;
         texto.textContent = CONSEJOS[i].texto;
-        tarjeta.classList.remove("vacia");
+
+        tarjeta.classList.remove("aparece");
+        void tarjeta.offsetWidth;          // reinicia la animación
+        tarjeta.classList.add("aparece");
+      }
+
+      // Consejo del día: cambia cada día y es el mismo para todos ese día.
+      // Multiplicar por 37 (sin divisores comunes con 112) recorre todos los
+      // consejos en un orden salteado en vez de uno tras otro.
+      var hoy = new Date();
+      var dias = Math.floor(Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()) / 864e5);
+      mostrar((dias * 37) % CONSEJOS.length);
+      tarjeta.classList.remove("aparece");
+
+      document.getElementById("otro").addEventListener("click", function () {
+        var i;
+        do { i = Math.floor(Math.random() * CONSEJOS.length); } while (i === actual && CONSEJOS.length > 1);
+        mostrar(i);
       });
     })();
   </script>
