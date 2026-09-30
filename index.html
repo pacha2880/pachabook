@@ -104,6 +104,29 @@
     .boton-secundario { background: transparent; color: #fff; border-color: rgba(255, 255, 255, .45); }
     .boton-secundario:hover { background: rgba(255, 255, 255, .08); }
     .boton svg { width: 20px; height: 20px; flex: none; }
+    /* Acceso al consejo del día desde la portada: chip con flecha animada */
+    .ir-consejo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 8px 16px;
+      font: 600 1rem/1 var(--titulos);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, .45);
+      border-radius: 999px;
+      transition: background .15s ease, border-color .15s ease, color .15s ease;
+    }
+    .ir-consejo:hover { color: var(--amarillo); border-color: var(--amarillo); background: rgba(253, 221, 70, .08); }
+    .ir-consejo .flecha { display: inline-block; animation: rebote 2s ease-in-out infinite; }
+    @keyframes rebote {
+      0%, 60%, 100% { transform: translateY(-3px); }
+      30% { transform: translateY(0); }
+    }
+    .ir-consejo:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 
     /* ---------- Secciones ---------- */
     section { padding: 80px 0; }
@@ -157,7 +180,30 @@
       padding: 32px 36px;
       margin-bottom: 24px;
       min-height: 220px;
+      position: relative;
     }
+    /* Compartir: esquina superior derecha, no se mueve con el largo del texto */
+    .compartir {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: 600 .95rem/1 var(--titulos);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, .4);
+      border-radius: 4px;
+      padding: 9px 12px;
+      cursor: pointer;
+    }
+    .compartir:hover { background: rgba(255, 255, 255, .08); border-color: #fff; }
+    .compartir:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+    .compartir svg { width: 18px; height: 18px; flex: none; }
+    .tarjeta .numero { padding-right: 150px; }
     .tarjeta .numero {
       font: 700 3.2rem/1 var(--titulos);
       color: var(--amarillo);
@@ -195,11 +241,17 @@
       .botones { justify-content: center; }
       section { padding: 56px 0; }
       .tarjeta { padding: 24px; }
+      .compartir { top: 18px; right: 18px; padding: 9px; }
+      .compartir .etiqueta { display: none; }
+      .compartir.aviso { padding: 9px 12px; }
+      .compartir.aviso .etiqueta { display: inline; }
+      .tarjeta .numero { padding-right: 48px; }
       .cabecera-azar { flex-direction: column; align-items: flex-start; }
       .cita { font-size: 1.15rem; }
     }
     @media (prefers-reduced-motion: reduce) {
       .tarjeta.aparece { animation: none; }
+      .ir-consejo .flecha { animation: none; transform: translateY(-3px); }
       html { scroll-behavior: auto; }
       .boton { transition: none; }
     }
@@ -223,6 +275,7 @@
           </a>
           <a class="boton boton-secundario" href="libro.html">Leer en línea</a>
         </div>
+        <a class="ir-consejo" href="#consejo"><span aria-hidden="true">💡</span> Ver consejo del día <span class="flecha" aria-hidden="true">↓</span></a>
       </div>
     </div>
   </header>
@@ -246,6 +299,10 @@
           <button class="boton boton-principal" id="otro" type="button"><span aria-hidden="true">🎲</span> Otro consejo</button>
         </div>
         <article class="tarjeta" id="tarjeta" aria-live="polite">
+          <button class="compartir" id="compartir" type="button" aria-label="Compartir este consejo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
+            <span class="etiqueta" id="compartir-etiqueta">Compartir</span>
+          </button>
           <p class="numero" id="c-numero"></p>
           <p class="seccion" id="c-seccion"></p>
           <p class="texto" id="c-texto">Lee los 112 consejos en el <a href="libro.html">libro en línea</a>.</p>
@@ -296,8 +353,62 @@
       // consejos en un orden salteado en vez de uno tras otro.
       var hoy = new Date();
       var dias = Math.floor(Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()) / 864e5);
-      mostrar((dias * 37) % CONSEJOS.length);
+      var delDia = (dias * 37) % CONSEJOS.length;
+      mostrar(delDia);
       tarjeta.classList.remove("aparece");
+
+      // Compartir el consejo que se está viendo, con enlace fijo a ese consejo en el libro
+      // En pantallas táctiles abre el menú de compartir del sistema; en computadora copia.
+      var botonCompartir = document.getElementById("compartir");
+      var etiqueta = document.getElementById("compartir-etiqueta");
+
+      function avisar(texto) {
+        etiqueta.textContent = texto;
+        botonCompartir.classList.add("aviso");   // en celular muestra el texto un momento
+        setTimeout(function () {
+          etiqueta.textContent = "Compartir";
+          botonCompartir.classList.remove("aviso");
+        }, 1800);
+      }
+
+      function copiar(texto) {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(texto).then(
+            function () { avisar("¡Copiado!"); },
+            function () { copiarViejo(texto); });
+        } else {
+          copiarViejo(texto);
+        }
+      }
+
+      function copiarViejo(texto) {             // para navegadores sin API de portapapeles
+        var area = document.createElement("textarea");
+        area.value = texto;
+        area.setAttribute("readonly", "");
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) {}
+        document.body.removeChild(area);
+        avisar(ok ? "¡Copiado!" : "No se pudo copiar");
+      }
+
+      botonCompartir.addEventListener("click", function () {
+        var n = actual + 1;
+        var url = new URL("libro.html#consejo-" + n, location.href).href;
+        var mensaje = "Consejo #" + n + ": " + CONSEJOS[actual].texto;
+        var tactil = window.matchMedia("(pointer: coarse)").matches;
+        if (tactil && navigator.share) {
+          navigator.share({ title: "Programación Competitiva Universitaria", text: mensaje, url: url })
+            .catch(function (e) {
+              if (!e || e.name !== "AbortError") copiar(mensaje + "\n" + url);  // AbortError = el usuario canceló
+            });
+        } else {
+          copiar(mensaje + "\n" + url);
+        }
+      });
 
       document.getElementById("otro").addEventListener("click", function () {
         var i;
