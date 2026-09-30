@@ -11,7 +11,7 @@ Web publicada: https://pacha2880.github.io/pachabook/
 - `tapa.jpg`, `contratapa.jpg`: versión final del diseñador, CMYK, 300 dpi, tamaño exacto de página (**sin sangrado**). No retocarlas.
 - `index.html`: portada web, escrita a mano.
 - `web/generar_web.py` + `web/plantilla_libro.html`: generan `libro.html` y `web/consejos.js` desde `contenido.tex` (el epígrafe lo toman de `main.tex`).
-- `web/tapa.jpg`: copia web de la tapa (sin sangrado), hecha a mano.
+- `web/tapa.jpg`, `web/contratapa.jpg`: copias web (RGB, 640 px) de las tapas, hechas a mano. En la portada, clic en el libro lo voltea.
 
 ## Publicación
 
@@ -31,7 +31,7 @@ Web publicada: https://pacha2880.github.io/pachabook/
 ## Lo que no se actualiza solo
 
 - Si cambia la cantidad de consejos, buscar "112" en todo el repo (`index.html`, `contenido.tex`) y avisar que la tapa también lo dice.
-- Si cambia `tapa.jpg`, regenerar `web/tapa.jpg` (convertir a RGB, 640 px de ancho).
+- Si cambia `tapa.jpg` o `contratapa.jpg`, regenerar su copia en `web/` (convertir a RGB, 640 px de ancho).
 - El texto de "Sobre el libro" en `index.html` es el de la contratapa: si cambia uno, actualizar el otro.
 - `generar_web.py` solo convierte los comandos LaTeX que el libro usa hoy. Si se agrega uno nuevo (tablas, notas al pie, fórmulas), adaptar el conversor y revisar `libro.html`.
 
