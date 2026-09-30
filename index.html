@@ -64,7 +64,13 @@
       perspective: 1400px;
       transform: rotate(-2deg);
       transition: transform .2s ease;
+      /* En celular: sin el recuadro de "tocado" ni selección de la imagen */
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
     }
+    .libro img { -webkit-user-drag: none; }
     .libro:hover { transform: rotate(-2deg) translateY(-4px); }
     .libro:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 6px; }
     .libro-interior {
@@ -245,6 +251,8 @@
     .tarjeta.aparece { animation: aparece .35s ease-out; }
     /* El dado gira sobre su centro al pedir otro consejo */
     .dado { display: inline-block; line-height: 1; transform-origin: 50% 50%; }
+    /* En celular: sin el recuadro de "tocado" al pedir otro consejo varias veces */
+    #otro { -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }
     .dado.rodando { animation: rodar .35s ease-out; }
     @keyframes rodar {
       0%   { transform: translateY(0) rotate(0); }
