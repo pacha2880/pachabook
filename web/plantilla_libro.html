@@ -7,7 +7,11 @@
   <meta name="description" content="Lee en línea Programación Competitiva Universitaria: 112 consejos para dominar la ICPC, de Rodrigo Salguero.">
   <meta property="og:title" content="Programación Competitiva Universitaria · Leer en línea">
   <meta property="og:description" content="112 consejos para dominar la ICPC, por Rodrigo Salguero.">
-  <meta property="og:image" content="https://pacha2880.github.io/pachabook/web/tapa.jpg">
+  <meta property="og:image" content="https://pacha2880.github.io/pachabook/web/miniatura.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="112 consejos para la ICPC">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23042550'/><g font-family='Arial Narrow,Arial,sans-serif' font-size='15' font-weight='700' fill='%23fddd46' text-anchor='middle'><text x='16' y='14.5'>28</text><text x='16' y='28.5'>80</text></g></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -192,12 +196,14 @@
     ol.consejos li {
       display: grid;
       grid-template-columns: 48px 1fr;
-      gap: 14px;
+      gap: 4px 14px;
       align-items: start;
       padding: 14px 16px;
       margin: 0 -16px;
       border-radius: 6px;
       transition: background .3s;
+      cursor: pointer;                       /* tocar cualquier parte del recuadro lo selecciona */
+      -webkit-tap-highlight-color: transparent;
     }
     ol.consejos li + li { border-top: 1px dashed var(--linea); }
     ol.consejos .num {
@@ -215,7 +221,33 @@
       margin-top: 2px;
     }
     ol.consejos .num:hover { background: #0b3268; }
-    ol.consejos li:target { background: var(--amarillo-suave); }
+    /* Se marca con una clase (no :target) para poder seleccionar sin mover la página */
+    ol.consejos li.seleccionado { background: var(--amarillo-suave); }
+    /* "Compartir": solo en el consejo seleccionado, debajo del texto a la derecha, gris tenue, sin fondo */
+    .compartir-consejo {
+      grid-column: 2;
+      justify-self: end;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin: 0 -4px -6px 0;
+      padding: 3px 4px;
+      border: 0;
+      background: none;
+      color: #8a8a8a;
+      font: 600 .9rem var(--titulos);
+      letter-spacing: .03em;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      animation: aparecer .3s;
+    }
+    .compartir-consejo:hover { color: var(--tinta-suave); }
+    .compartir-consejo:focus-visible { outline: 2px solid var(--enlace); outline-offset: 2px; border-radius: 4px; }
+    .compartir-consejo svg { width: 16px; height: 16px; }
+    .compartir-consejo .hecho, .compartir-consejo.copiado .icono { display: none; }
+    .compartir-consejo.copiado .hecho { display: block; }
+    .compartir-consejo.copiado { color: #3a8a4a; }
+    @keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
     .ref-consejo { font-weight: 600; }
     .cita { text-decoration: none; font-size: .9em; }
 
@@ -252,11 +284,12 @@
       }
       nav.indice.abierto { display: block; }
       main { border: 0; padding: 8px 20px 64px; }
-      ol.consejos li { grid-template-columns: 40px 1fr; gap: 10px; margin: 0 -8px; padding: 12px 8px; }
+      ol.consejos li { grid-template-columns: 40px 1fr; gap: 4px 10px; margin: 0 -8px; padding: 12px 8px; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       ol.consejos li { transition: none; }
+      .compartir-consejo { animation: none; }
     }
   </style>
 </head>
@@ -327,6 +360,107 @@
           if (destino) destino.scrollIntoView({ behavior: "instant" });
         });
       }
+
+      // Compartir el consejo seleccionado (#consejo-N), igual que en la portada:
+      // en pantallas táctiles abre el menú del sistema; en computadora copia.
+      var compartir = document.createElement("button");
+      compartir.type = "button";
+      compartir.className = "compartir-consejo";
+      compartir.innerHTML =
+        '<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>' +
+        '<svg class="hecho" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>' +
+        '<span class="etiqueta">Compartir</span>';
+      var etiqueta = compartir.querySelector(".etiqueta");
+      var seleccionado = null, espera = null;
+
+      function seleccionar(li) {
+        if (seleccionado) seleccionado.classList.remove("seleccionado");
+        seleccionado = li;
+        if (!li) { compartir.remove(); return; }
+        li.classList.add("seleccionado");
+        clearTimeout(espera);
+        compartir.classList.remove("copiado");
+        etiqueta.textContent = "Compartir";
+        compartir.setAttribute("aria-label", "Compartir el consejo " + li.id.slice(8));
+        li.appendChild(compartir);
+      }
+      function seleccionarDesdeHash() {
+        var id = decodeURIComponent(location.hash.slice(1));
+        seleccionar(/^consejo-\d+$/.test(id) ? document.getElementById(id) : null);
+      }
+      // Los enlaces "consejo 56" del texto sí llevan al consejo (cambian el hash)
+      window.addEventListener("hashchange", seleccionarDesdeHash);
+      seleccionarDesdeHash();
+
+      // Tocar cualquier parte del recuadro (o su número) lo selecciona sin mover
+      // la página: se cambia la URL con replaceState, que no hace scroll.
+      document.querySelectorAll("ol.consejos li").forEach(function (li) {
+        li.addEventListener("click", function (e) {
+          var enlace = e.target.closest("a");
+          if (enlace && !enlace.classList.contains("num")) return;   // enlaces del texto: normal
+          if (e.target.closest(".compartir-consejo")) return;
+          if (String(window.getSelection())) return;                  // estaba seleccionando texto
+          e.preventDefault();
+          history.replaceState(null, "", "#" + li.id);
+          // Al pasar "Compartir" de un consejo a otro cambian sus alturas; se
+          // corrige el scroll para que el consejo tocado quede quieto en pantalla.
+          var antes = li.getBoundingClientRect().top;
+          seleccionar(li);
+          window.scrollBy({ top: li.getBoundingClientRect().top - antes, behavior: "instant" });
+        });
+      });
+
+      // Tras copiar: ✓ verde y "¡Copiado!" un momento
+      function avisar(texto) {
+        compartir.classList.toggle("copiado", texto === "¡Copiado!");
+        etiqueta.textContent = texto;
+        compartir.setAttribute("aria-label", texto);
+        clearTimeout(espera);
+        espera = setTimeout(function () {
+          compartir.classList.remove("copiado");
+          etiqueta.textContent = "Compartir";
+          if (seleccionado) compartir.setAttribute("aria-label", "Compartir el consejo " + seleccionado.id.slice(8));
+        }, 1800);
+      }
+      function copiarViejo(texto) {             // para navegadores sin API de portapapeles
+        var area = document.createElement("textarea");
+        area.value = texto;
+        area.setAttribute("readonly", "");
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) {}
+        document.body.removeChild(area);
+        avisar(ok ? "¡Copiado!" : "No se pudo copiar");
+      }
+      function copiar(texto) {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(texto).then(
+            function () { avisar("¡Copiado!"); },
+            function () { copiarViejo(texto); });
+        } else {
+          copiarViejo(texto);
+        }
+      }
+
+      compartir.addEventListener("click", function () {
+        if (!seleccionado) return;
+        var n = seleccionado.id.slice(8);
+        var texto = seleccionado.querySelector("span").textContent.replace(/\s+/g, " ").trim();
+        var url = location.href.split("#")[0] + "#consejo-" + n;
+        var mensaje = "Consejo #" + n + ": " + texto;
+        var tactil = window.matchMedia("(pointer: coarse)").matches;
+        if (tactil && navigator.share) {
+          navigator.share({ title: "Programación Competitiva Universitaria", text: mensaje, url: url })
+            .catch(function (e) {
+              if (!e || e.name !== "AbortError") copiar(mensaje + "\n" + url);  // AbortError = el usuario canceló
+            });
+        } else {
+          copiar(mensaje + "\n" + url);
+        }
+      });
     })();
   </script>
 </body>

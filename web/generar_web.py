@@ -3,7 +3,6 @@
 Produce:
   libro.html       el libro completo para leer en línea
   web/consejos.js  los 112 consejos (para el "consejo al azar" de index.html)
-  consejo/N.html   una página por consejo, para la vista previa al compartir
 
 Uso (desde la raíz del repo):  py -3 web/generar_web.py
 Volver a correrlo cada vez que cambie contenido.tex.
@@ -264,63 +263,6 @@ def epigrafe(libro):
             f"<figcaption>— {autor}</figcaption></figure>")
 
 
-SITIO = "https://pacha2880.github.io/pachabook/"
-
-
-def resumen(texto, maximo=200):
-    """Recorta en un límite de palabra, para la descripción de la vista previa."""
-    texto = html.unescape(texto)
-    if len(texto) <= maximo:
-        return texto
-    return texto[:maximo].rsplit(" ", 1)[0].rstrip(",;:.") + "…"
-
-
-def paginas_consejos(consejos):
-    """Una página por consejo (consejo/N.html) solo para la vista previa al
-    compartir: WhatsApp, Telegram, etc. no ven el #consejo-N ni ejecutan JS,
-    así que cada consejo necesita su propia URL con su texto en og:description.
-    La página redirige enseguida al consejo dentro de libro.html."""
-    carpeta = RAIZ / "consejo"
-    carpeta.mkdir(exist_ok=True)
-    for viejo in carpeta.glob("*.html"):
-        viejo.unlink()
-    for c in consejos:
-        n = c["n"]
-        destino = f"../libro.html#consejo-{n}"
-        titulo = html.escape(f"Consejo #{n} · Programación Competitiva Universitaria")
-        desc = html.escape(resumen(c["texto"]))
-        texto = html.escape(html.unescape(c["texto"]), quote=False)
-        (carpeta / f"{n}.html").write_text(f"""<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{titulo}</title>
-  <meta name="description" content="{desc}">
-  <meta property="og:title" content="{titulo}">
-  <meta property="og:description" content="{desc}">
-  <meta property="og:site_name" content="Programación Competitiva Universitaria">
-  <meta property="og:image" content="{SITIO}web/miniatura.jpg">
-  <meta property="og:image:type" content="image/jpeg">
-  <meta property="og:image:width" content="600">
-  <meta property="og:image:height" content="600">
-  <meta property="og:image:alt" content="112 consejos para la ICPC">
-  <meta property="og:url" content="{SITIO}consejo/{n}.html">
-  <meta property="og:type" content="article">
-  <meta property="og:locale" content="es_LA">
-  <meta name="twitter:card" content="summary">
-  <meta name="theme-color" content="#042550">
-  <meta http-equiv="refresh" content="0; url={destino}">
-  <script>location.replace("{destino}");</script>
-</head>
-<body>
-  <p><strong>Consejo #{n}:</strong> {texto}</p>
-  <p><a href="{destino}">Leer en el libro →</a></p>
-</body>
-</html>
-""", encoding="utf-8")
-
-
 def main():
     libro, cuerpo = convertir(TEX.read_text(encoding="utf-8"))
     cuerpo = epigrafe(libro) + "\n" + cuerpo
@@ -334,8 +276,6 @@ def main():
     js = "// Generado por web/generar_web.py a partir de contenido.tex. No editar a mano.\n"
     js += "const CONSEJOS = " + json.dumps(consejos, ensure_ascii=False, indent=1) + ";\n"
     (RAIZ / "web" / "consejos.js").write_text(js, encoding="utf-8")
-
-    paginas_consejos(libro.consejos)
 
     print(f"libro.html: {len(libro.indice)} entradas de índice, {len(libro.consejos)} consejos")
 
