@@ -12,6 +12,8 @@ Web publicada: https://pacha2880.github.io/pachabook/
 - `index.html`: portada web, escrita a mano.
 - `web/generar_web.py` + `web/plantilla_libro.html`: generan `libro.html` y `web/consejos.js` desde `contenido.tex` (el epígrafe lo toman de `main.tex`).
 - `web/tapa.jpg`, `web/contratapa.jpg`: copias web (RGB, 640 px) de las tapas, hechas a mano. En la portada, clic en el libro lo voltea.
+- `consejo/N.html` (generadas, en `.gitignore`): una página por consejo con su texto en las etiquetas `og:` y redirección a `libro.html#consejo-N`. El botón Compartir de la portada enlaza a ellas, para que WhatsApp/Telegram muestren el consejo en la vista previa.
+- `web/miniatura.jpg`: miniatura de esa vista previa (600×600, azul y amarillo, "112 CONSEJOS PARA LA ICPC"), hecha a mano, una sola para todos los consejos.
 
 ## Publicación
 
@@ -30,7 +32,8 @@ Web publicada: https://pacha2880.github.io/pachabook/
 
 ## Lo que no se actualiza solo
 
-- Si cambia la cantidad de consejos, buscar "112" en todo el repo (`index.html`, `contenido.tex`) y avisar que la tapa también lo dice.
+- Si cambia la cantidad de consejos, buscar "112" en todo el repo (`index.html`, `contenido.tex`) y avisar que la tapa y `web/miniatura.jpg` también lo dicen.
+- Si se cambia `web/miniatura.jpg`, darle otro nombre: WhatsApp y Telegram guardan en caché la imagen por URL.
 - Si cambia `tapa.jpg` o `contratapa.jpg`, regenerar su copia en `web/` (convertir a RGB, 640 px de ancho).
 - El texto de "Sobre el libro" en `index.html` es el de la contratapa: si cambia uno, actualizar el otro.
 - `generar_web.py` solo convierte los comandos LaTeX que el libro usa hoy. Si se agrega uno nuevo (tablas, notas al pie, fórmulas), adaptar el conversor y revisar `libro.html`.

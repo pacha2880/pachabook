@@ -459,7 +459,8 @@
 
       botonCompartir.addEventListener("click", function () {
         var n = actual + 1;
-        var url = new URL("libro.html#consejo-" + n, location.href).href;
+        // consejo/N.html lleva el texto del consejo en la vista previa y redirige al libro
+        var url = new URL("consejo/" + n + ".html", location.href).href;
         var mensaje = "Consejo #" + n + ": " + CONSEJOS[actual].texto;
         var tactil = window.matchMedia("(pointer: coarse)").matches;
         if (tactil && navigator.share) {
